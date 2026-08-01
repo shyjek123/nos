@@ -17,7 +17,7 @@ sudo rm -rf /usr/share/applications/org.gnome.SystemMonitor.desktop
 sudo rm -rf /usr/local/share/applications/nvim.desktop
 sudo rm -rf /usr/local/share/applications/vim.desktop
 
-# Create folders (no LibreOffice — purged with Ubuntu bloat)
+# Create folders (LibreOffice apps omitted — removed as unused-app bloat)
 gsettings set org.gnome.desktop.app-folders folder-children "['Utilities', 'Sundry', 'YaST', 'Updates', 'Xtra', 'WebApps']"
 gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Updates/ name 'Install & Update'
 gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Updates/ apps "['software-properties-drivers.desktop', 'software-properties-gtk.desktop', 'update-manager.desktop', 'firmware-updater_firmware-updater.desktop']"

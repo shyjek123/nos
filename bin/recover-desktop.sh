@@ -48,13 +48,14 @@ done
 if [[ "$NEED_DESKTOP" -eq 1 ]] || ! pkg_installed ubuntu-desktop; then
   echo "==> Reinstalling Ubuntu desktop (this is why you only see a TTY)"
   sudo apt-get update
-  sudo apt-get install -y ubuntu-desktop gdm3 gnome-shell ubuntu-session yelp
+  sudo apt-get install -y ubuntu-desktop gdm3 gnome-shell ubuntu-session yelp ubuntu-wallpapers
 fi
 
-echo "==> Ensuring graphical boot target"
+echo "==> Ensuring graphical boot target + stock Ubuntu fallbacks"
+sudo apt-get install -y --no-remove ubuntu-desktop gdm3 gnome-shell ubuntu-session yelp ubuntu-wallpapers 2>/dev/null || true
 sudo systemctl set-default graphical.target
 sudo systemctl enable gdm3 2>/dev/null || sudo systemctl enable gdm 2>/dev/null || true
-sudo apt-mark manual gdm3 gnome-shell ubuntu-session ubuntu-desktop yelp 2>/dev/null || true
+sudo apt-mark manual gdm3 gnome-shell ubuntu-session ubuntu-desktop yelp ubuntu-wallpapers 2>/dev/null || true
 
 # Prefer a live user session bus when available (GUI still half-alive).
 if [[ -z "${DBUS_SESSION_BUS_ADDRESS:-}" ]]; then

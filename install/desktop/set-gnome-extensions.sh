@@ -12,6 +12,11 @@ gnome-extensions disable ding@rastersoft.com 2>/dev/null || true
 # Pause to assure user is ready to accept confirmations (must not abort install under set -e)
 if ! gum confirm "To install Gnome extensions, you need to accept some confirmations. Ready?"; then
   echo "Skipping Gnome extension install/config."
+  echo "Restoring stock Ubuntu Dock / desktop icons as fallback."
+  gnome-extensions enable ubuntu-dock@ubuntu.com 2>/dev/null || true
+  gnome-extensions enable ubuntu-appindicators@ubuntu.com 2>/dev/null || true
+  gnome-extensions enable tiling-assistant@ubuntu.com 2>/dev/null || true
+  gnome-extensions enable ding@rastersoft.com 2>/dev/null || true
   return 0 2>/dev/null || exit 0
 fi
 
