@@ -86,7 +86,7 @@ fi
 
 if ! gh auth status -h github.com &>/dev/null; then
   echo "GitHub authentication failed or was cancelled — skipping project clone."
-  return 0 2>/dev/null || exit 0
+  return 0 2>/dev/null || true
 fi
 
 CLONE_ALL=false
@@ -138,5 +138,3 @@ fi
 # Neovim config: always attempt (clone just Nvim_Config if missing)
 ensure_nvim_config_repo
 install_nvim_config_from_projects
-
-return 0 2>/dev/null || exit 0

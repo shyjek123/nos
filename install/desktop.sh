@@ -1,9 +1,12 @@
 #!/bin/bash
 
-# Run desktop installers
+# Run desktop installers; one failure must not abort the rest of NOS
 for installer in "$NOS_PATH"/install/desktop/*.sh; do
+  echo "=> $(basename "$installer")"
   # shellcheck disable=SC1090
-  source "$installer"
+  if ! source "$installer"; then
+    echo "WARNING: $(basename "$installer") failed — continuing install."
+  fi
 done
 
 # Logout to pickup changes
