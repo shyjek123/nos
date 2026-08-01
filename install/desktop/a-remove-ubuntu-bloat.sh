@@ -84,11 +84,10 @@ BLOAT_TELEMETRY=(
   kerneloops
 )
 
-# Snap store UI clutter (keep snapd itself — Ubuntu desktop still depends on it)
+# Snap store UI clutter (keep snapd + gnome-software for Flatpak)
 BLOAT_SNAP_UI=(
   snap-store
   ubuntu-software
-  gnome-software
   gnome-software-plugin-snap
 )
 

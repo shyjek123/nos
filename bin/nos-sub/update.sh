@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CHOICES=(
-	"NOS        Update NOS itself and run any migrations"
+	"NOS           Update NOS itself and run any migrations"
 	"Ollama        Run LLMs, like Meta's Llama3, locally"
 	"LazyGit       TUI for Git"
 	"LazyDocker    TUI for Docker"
@@ -24,8 +24,13 @@ else
 	*) INSTALLER_FILE="$NOS_PATH/install/terminal/app-$INSTALLER.sh" ;;
 	esac
 
-	source $INSTALLER_FILE && gum spin --spinner globe --title "Update completed!" -- sleep 3
+	if [[ ! -f "$INSTALLER_FILE" ]]; then
+		echo "No updater: $INSTALLER_FILE"
+	else
+		# shellcheck disable=SC1090
+		source "$INSTALLER_FILE" && gum spin --spinner globe --title "Update completed!" -- sleep 3
+	fi
 fi
 
 clear
-source $NOS_PATH/bin/nos
+source "$NOS_PATH/bin/nos"

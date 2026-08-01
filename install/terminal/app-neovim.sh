@@ -19,8 +19,11 @@ if [ ! -d "$HOME/.config/nvim" ]; then
   # Remove the .git folder, so you can add it to your own repo later
   rm -rf ~/.config/Nvim_Config
 
-  # Turn off animated scrolling
-  cp ~/.local/share/nos/configs/neovim/snacks-animated-scrolling-off.lua ~/.config/nvim/lua/plugins/
+  # Turn off animated scrolling (best-effort; config layout may vary)
+  if [[ -f ~/.local/share/nos/configs/neovim/snacks-animated-scrolling-off.lua ]]; then
+    mkdir -p ~/.config/nvim/lua/plugins
+    cp ~/.local/share/nos/configs/neovim/snacks-animated-scrolling-off.lua ~/.config/nvim/lua/plugins/
+  fi
 fi
 
 # Replace desktop launcher with one running inside Ghostty

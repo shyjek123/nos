@@ -1,4 +1,4 @@
 #!/bin/bash
 
 # Provides a system clipboard interface for Neovim under Wayland
-sudo apt install wl-clipboard xclip
+sudo apt install -y wl-clipboard xclip

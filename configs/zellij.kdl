@@ -1,4 +1,4 @@
-theme "velocity"
+theme "tokyo-night"
 default_layout "compact"
 on_force_close "quit"
 

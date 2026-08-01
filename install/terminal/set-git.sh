@@ -15,8 +15,3 @@ fi
 if [[ -n "${NOS_USER_EMAIL//[[:space:]]/}" ]]; then
   git config --global user.email "$NOS_USER_EMAIL"
 fi
-
-#setup github-cli
-echo "SETTING UP GH"
-gh auth login
-gh auth setup-git
