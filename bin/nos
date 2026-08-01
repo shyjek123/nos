@@ -1,0 +1,4 @@
+#!/bin/bash
+
+source $NOS_PATH/bin/omakub-sub/header.sh
+source $NOS_PATH/bin/omakub-sub/menu.sh

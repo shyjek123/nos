@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Remove Btop entry for one that runs in Ghostty
+sudo rm -rf /usr/share/applications/btop.desktop
+
+# App doesn't do anything when started from the app grid
+sudo rm -rf /usr/share/applications/org.flameshot.Flameshot.desktop
+
+# Remove the ImageMagick icon
+sudo rm -rf /usr/share/applications/display-im6.q16.desktop
+sudo rm -rf /usr/share/applications/display-im7.q16.desktop
+
+# Replacing this with btop
+sudo rm -rf /usr/share/applications/org.gnome.SystemMonitor.desktop
+
+# We added our own meant for Ghostty
+sudo rm -rf /usr/local/share/applications/nvim.desktop
+sudo rm -rf /usr/local/share/applications/vim.desktop
+
+# Create folders (no LibreOffice — purged with Ubuntu bloat)
+gsettings set org.gnome.desktop.app-folders folder-children "['Utilities', 'Sundry', 'YaST', 'Updates', 'Xtra', 'WebApps']"
+gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Updates/ name 'Install & Update'
+gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Updates/ apps "['software-properties-drivers.desktop', 'software-properties-gtk.desktop', 'update-manager.desktop', 'firmware-updater_firmware-updater.desktop']"
+gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Xtra/ name 'Xtra'
+gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/Xtra/ apps "['org.Characters.desktop', 'gnome-language-selector.desktop', 'org.gnome.PowerStats.desktop', 'org.gnome.Logs.desktop', 'org.gnome.eog.desktop', 'org.gnome.Sysprof.desktop']"
+gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/WebApps/ name 'Web Apps'
+gsettings set org.gnome.desktop.app-folders.folder:/org/gnome/desktop/app-folders/folders/WebApps/ apps "@as []"

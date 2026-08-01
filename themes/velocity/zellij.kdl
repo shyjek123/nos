@@ -1,0 +1,15 @@
+themes {
+    velocity {
+        fg 232 224 216
+        bg 12 10 11
+        black 26 18 20
+        red 230 57 70
+        green 125 155 118
+        yellow 244 162 97
+        blue 196 92 38
+        magenta 214 90 122
+        cyan 231 111 81
+        white 232 224 216
+        orange 255 122 61
+    }
+}

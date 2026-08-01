@@ -1,0 +1,23 @@
+# Velocity — Corvette C8 / McLaren night palette
+# Deep asphalt black + racing red + papaya orange accents
+background = #0c0a0b
+foreground = #e8e0d8
+cursor-color = #ff4d4d
+selection-background = #3a1518
+selection-foreground = #ffffff
+palette = 0=#1a1214
+palette = 1=#e63946
+palette = 2=#7d9b76
+palette = 3=#f4a261
+palette = 4=#c45c26
+palette = 5=#d65a7a
+palette = 6=#e76f51
+palette = 7=#e8e0d8
+palette = 8=#5a4548
+palette = 9=#ff5c5c
+palette = 10=#9bb892
+palette = 11=#ffb703
+palette = 12=#ff7a3d
+palette = 13=#f2849e
+palette = 14=#ff8f6b
+palette = 15=#ffffff

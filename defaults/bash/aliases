@@ -1,0 +1,2 @@
+# Prefer typing full commands; only keep this one.
+alias gdb='pwndbg'

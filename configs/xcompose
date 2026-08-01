@@ -1,0 +1,5 @@
+include "%H/.local/share/nos/defaults/xcompose"
+
+# Identification
+<Multi_key> <space> <n> : "$NOS_USER_NAME"
+<Multi_key> <space> <e> : "$NOS_USER_EMAIL"
