@@ -1,0 +1,32 @@
+# McLaren Artura — Omakub-style full ANSI 16 (mirrors ghostty)
+[colors.primary]
+background = "#14110e"
+foreground = "#e8d5c4"
+
+[colors.cursor]
+text = "#14110e"
+cursor = "#ff8a3d"
+
+[colors.normal]
+black = "#2a221c"
+red = "#e05a45"
+green = "#9bc27a"
+yellow = "#f0a020"
+blue = "#6b9fd4"
+magenta = "#d4806a"
+cyan = "#5aada0"
+white = "#c4a890"
+
+[colors.bright]
+black = "#5a4538"
+red = "#ff7a55"
+green = "#b8d898"
+yellow = "#ff8a3d"
+blue = "#8ab4e8"
+magenta = "#e8a080"
+cyan = "#70c8b8"
+white = "#f5ebe0"
+
+[colors.selection]
+text = "#14110e"
+background = "#ff8a3d"

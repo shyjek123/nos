@@ -1,0 +1,24 @@
+# Corvette C8 Z06 — Omakub-style full ANSI 16 (all CLI colors inherit this).
+# Racing red dominates via red/bright-red + cursor/selection (blue stays blue).
+
+background = #0e0a0c
+foreground = #e8d4d8
+cursor-color = #e11d2e
+selection-background = #e11d2e
+selection-foreground = #0e0a0c
+palette = 0=#241418
+palette = 1=#e11d2e
+palette = 2=#7a9e7a
+palette = 3=#d08060
+palette = 4=#6a8cbc
+palette = 5=#c05070
+palette = 6=#5a9098
+palette = 7=#c8a8b0
+palette = 8=#5a3038
+palette = 9=#ff3d4e
+palette = 10=#98b898
+palette = 11=#e87070
+palette = 12=#8aa8d8
+palette = 13=#e07090
+palette = 14=#70b0b8
+palette = 15=#f0e0e4

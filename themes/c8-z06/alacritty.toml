@@ -1,0 +1,32 @@
+# Corvette C8 Z06 — Omakub-style full ANSI 16 (mirrors ghostty)
+[colors.primary]
+background = "#0e0a0c"
+foreground = "#e8d4d8"
+
+[colors.cursor]
+text = "#0e0a0c"
+cursor = "#e11d2e"
+
+[colors.normal]
+black = "#241418"
+red = "#e11d2e"
+green = "#7a9e7a"
+yellow = "#d08060"
+blue = "#6a8cbc"
+magenta = "#c05070"
+cyan = "#5a9098"
+white = "#c8a8b0"
+
+[colors.bright]
+black = "#5a3038"
+red = "#ff3d4e"
+green = "#98b898"
+yellow = "#e87070"
+blue = "#8aa8d8"
+magenta = "#e07090"
+cyan = "#70b0b8"
+white = "#f0e0e4"
+
+[colors.selection]
+text = "#0e0a0c"
+background = "#e11d2e"

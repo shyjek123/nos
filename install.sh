@@ -17,11 +17,37 @@ source "$NOS_PATH/install/terminal/required/app-gum.sh" >/dev/null
 source "$NOS_PATH/install/first-run-choices.sh"
 source "$NOS_PATH/install/identification.sh"
 
+nos_disable_sleep() {
+  # Prevent blank/lock/sleep for the whole install (display going black mid-run)
+  gsettings set org.gnome.desktop.screensaver lock-enabled false 2>/dev/null || true
+  gsettings set org.gnome.desktop.screensaver idle-activation-enabled false 2>/dev/null || true
+  gsettings set org.gnome.desktop.session idle-delay 0 2>/dev/null || true
+  gsettings set org.gnome.settings-daemon.plugins.power idle-dim false 2>/dev/null || true
+  gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing' 2>/dev/null || true
+  gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'nothing' 2>/dev/null || true
+  gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0 2>/dev/null || true
+  gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 0 2>/dev/null || true
+  # X11 fallbacks (no-op on pure Wayland)
+  xset s off 2>/dev/null || true
+  xset -dpms 2>/dev/null || true
+}
+
+nos_restore_sleep() {
+  gsettings set org.gnome.desktop.screensaver lock-enabled true 2>/dev/null || true
+  gsettings set org.gnome.desktop.screensaver idle-activation-enabled true 2>/dev/null || true
+  gsettings set org.gnome.desktop.session idle-delay 300 2>/dev/null || true
+  gsettings set org.gnome.settings-daemon.plugins.power idle-dim true 2>/dev/null || true
+  gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'suspend' 2>/dev/null || true
+  gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'suspend' 2>/dev/null || true
+  xset s on 2>/dev/null || true
+  xset +dpms 2>/dev/null || true
+}
+
 # Desktop software and tweaks will only be installed if we're running Gnome
 if [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]]; then
-  # Ensure computer doesn't go to sleep or lock while installing
-  gsettings set org.gnome.desktop.screensaver lock-enabled false
-  gsettings set org.gnome.desktop.session idle-delay 0
+  nos_disable_sleep
+  # Always restore power settings even if a later step fails
+  trap 'nos_restore_sleep; echo "Nos installation failed! You can retry by running: source \"$NOS_PATH/install.sh\""' ERR
 
   echo "Installing terminal and desktop tools..."
 
@@ -31,11 +57,10 @@ if [[ "$XDG_CURRENT_DESKTOP" == *"GNOME"* ]]; then
   # Install desktop tools and tweaks
   source "$NOS_PATH/install/desktop.sh"
 
-  # Revert to normal idle and lock settings
-  gsettings set org.gnome.desktop.screensaver lock-enabled true
-  gsettings set org.gnome.desktop.session idle-delay 300
+  nos_restore_sleep
+  # Keep the original ERR trap message after successful desktop path
+  trap 'echo "Nos installation failed! You can retry by running: source \"$NOS_PATH/install.sh\""' ERR
 else
   echo "Only installing terminal tools..."
   source "$NOS_PATH/install/terminal.sh"
 fi
-

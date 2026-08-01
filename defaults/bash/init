@@ -1,3 +1,6 @@
+# bat uses the terminal ANSI 16 palette (same idea as Omakub + theme.toml)
+export BAT_THEME="${BAT_THEME:-ansi}"
+
 if command -v mise &> /dev/null; then
   eval "$(mise activate bash)"
 fi

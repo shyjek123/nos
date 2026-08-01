@@ -1,0 +1,24 @@
+# McLaren Artura — Omakub-style full ANSI 16 (all CLI colors inherit this).
+# Orange dominates via red/yellow/bright-yellow + cursor/selection (blue stays blue).
+
+background = #14110e
+foreground = #e8d5c4
+cursor-color = #ff8a3d
+selection-background = #ff8a3d
+selection-foreground = #14110e
+palette = 0=#2a221c
+palette = 1=#e05a45
+palette = 2=#9bc27a
+palette = 3=#f0a020
+palette = 4=#6b9fd4
+palette = 5=#d4806a
+palette = 6=#5aada0
+palette = 7=#c4a890
+palette = 8=#5a4538
+palette = 9=#ff7a55
+palette = 10=#b8d898
+palette = 11=#ff8a3d
+palette = 12=#8ab4e8
+palette = 13=#e8a080
+palette = 14=#70c8b8
+palette = 15=#f5ebe0

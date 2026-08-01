@@ -12,17 +12,23 @@ gnome-extensions disable ding@rastersoft.com 2>/dev/null || true
 # Pause to assure user is ready to accept confirmations (must not abort install under set -e)
 if ! gum confirm "To install Gnome extensions, you need to accept some confirmations. Ready?"; then
   echo "Skipping Gnome extension install/config."
-  return 0 2>/dev/null || exit 0
+  return 0 2>/dev/null || true
 fi
 
+EXTENSIONS=(
+  tactile@lundal.io
+  just-perfection-desktop@just-perfection
+  blur-my-shell@aunetx
+  space-bar@luchrioh
+  undecorate@sun.wxg@gmail.com
+  tophat@fflewddur.github.io
+  AlphabeticalAppGrid@stuarthayhurst
+)
+
 # Install new extensions
-gext install tactile@lundal.io
-gext install just-perfection-desktop@just-perfection
-gext install blur-my-shell@aunetx
-gext install space-bar@luchrioh
-gext install undecorate@sun.wxg@gmail.com
-gext install tophat@fflewddur.github.io
-gext install AlphabeticalAppGrid@stuarthayhurst
+for ext in "${EXTENSIONS[@]}"; do
+  gext install "$ext" || echo "WARNING: gext install failed for $ext"
+done
 
 # Compile gsettings schemas in order to be able to set them
 for schema in \
@@ -40,6 +46,17 @@ for schema in \
 done
 sudo glib-compile-schemas /usr/share/glib-2.0/schemas/
 
+# gext install does not always enable — force-enable via CLI + gsettings
+for ext in "${EXTENSIONS[@]}"; do
+  gnome-extensions enable "$ext" 2>/dev/null || true
+done
+
+# Persist enabled/disabled lists (survives until next shell load)
+gsettings set org.gnome.shell enabled-extensions \
+  "['tactile@lundal.io', 'just-perfection-desktop@just-perfection', 'blur-my-shell@aunetx', 'space-bar@luchrioh', 'undecorate@sun.wxg@gmail.com', 'tophat@fflewddur.github.io', 'AlphabeticalAppGrid@stuarthayhurst']"
+gsettings set org.gnome.shell disabled-extensions \
+  "['ubuntu-dock@ubuntu.com', 'ding@rastersoft.com', 'tiling-assistant@ubuntu.com', 'ubuntu-appindicators@ubuntu.com']"
+
 # Configure Tactile
 gsettings set org.gnome.shell.extensions.tactile col-0 1
 gsettings set org.gnome.shell.extensions.tactile col-1 2
@@ -49,13 +66,13 @@ gsettings set org.gnome.shell.extensions.tactile row-0 1
 gsettings set org.gnome.shell.extensions.tactile row-1 1
 gsettings set org.gnome.shell.extensions.tactile gap-size 32
 
-# Configure Just Perfection
+# Configure Just Perfection (copied from Omakub)
 gsettings set org.gnome.shell.extensions.just-perfection animation 2
 gsettings set org.gnome.shell.extensions.just-perfection dash-app-running true
 gsettings set org.gnome.shell.extensions.just-perfection workspace true
 gsettings set org.gnome.shell.extensions.just-perfection workspace-popup false
 
-# Configure Blur My Shell
+# Configure Blur My Shell (copied from Omakub)
 gsettings set org.gnome.shell.extensions.blur-my-shell.appfolder blur false
 gsettings set org.gnome.shell.extensions.blur-my-shell.lockscreen blur false
 gsettings set org.gnome.shell.extensions.blur-my-shell.screenshot blur false
@@ -69,11 +86,22 @@ gsettings set org.gnome.shell.extensions.blur-my-shell.dash-to-dock sigma 30
 gsettings set org.gnome.shell.extensions.blur-my-shell.dash-to-dock static-blur true
 gsettings set org.gnome.shell.extensions.blur-my-shell.dash-to-dock style-dash-to-dock 0
 
-# Configure Space Bar
+# Configure Space Bar — Omakub base + numbered static workspaces in the top bar
+gsettings set org.gnome.mutter dynamic-workspaces false
+gsettings set org.gnome.desktop.wm.preferences num-workspaces 6
 gsettings set org.gnome.shell.extensions.space-bar.behavior smart-workspace-names false
 gsettings set org.gnome.shell.extensions.space-bar.shortcuts enable-activate-workspace-shortcuts false
 gsettings set org.gnome.shell.extensions.space-bar.shortcuts enable-move-to-workspace-shortcuts true
 gsettings set org.gnome.shell.extensions.space-bar.shortcuts open-menu "@as []"
+gsettings set org.gnome.shell.extensions.space-bar.behavior indicator-style 'workspaces-bar'
+gsettings set org.gnome.shell.extensions.space-bar.behavior position 'left'
+gsettings set org.gnome.shell.extensions.space-bar.behavior position-index 0
+gsettings set org.gnome.shell.extensions.space-bar.behavior show-empty-workspaces true
+gsettings set org.gnome.shell.extensions.space-bar.behavior always-show-numbers true
+gsettings set org.gnome.shell.extensions.space-bar.behavior system-workspace-indicator false
+gsettings set org.gnome.shell.extensions.space-bar.behavior enable-custom-label true
+gsettings set org.gnome.shell.extensions.space-bar.behavior custom-label-unnamed '{{number}}'
+gsettings set org.gnome.shell.extensions.space-bar.behavior custom-label-named '{{number}}'
 
 # Configure TopHat
 gsettings set org.gnome.shell.extensions.tophat show-icons false

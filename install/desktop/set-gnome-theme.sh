@@ -1,5 +1,5 @@
 #!/bin/bash
 
-source "$NOS_PATH/themes/velocity/gnome.sh"
-# TopHat may be skipped if the user declined extension install
-source "$NOS_PATH/themes/velocity/tophat.sh" 2>/dev/null || true
+# Default NOS desktop theme (Omakub-style single wallpaper apply)
+source "$NOS_PATH/themes/c8-z06/gnome.sh"
+source "$NOS_PATH/themes/c8-z06/tophat.sh"
