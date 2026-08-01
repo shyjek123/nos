@@ -11,6 +11,9 @@ gum style --border rounded --padding "0 2" --border-foreground 51 \
 	"  nos font            change terminal font" \
 	"  nos update          update NOS / terminal tools" \
 	"" \
+	"If the desktop is black after install, from a TTY (Ctrl+Alt+F3):" \
+	"  bash ~/.local/share/nos/bin/recover-desktop.sh --reboot" \
+	"" \
 	"Install root: $NOS_PATH" \
 	"Projects dir: ${NOS_PROJECTS_DIR:-$HOME/projects}"
 
