@@ -46,6 +46,9 @@ for schema in \
 done
 sudo glib-compile-schemas /usr/share/glib-2.0/schemas/
 
+# Safe Mode / tweak tools set this true and leave only stock workspace dots
+gsettings set org.gnome.shell disable-user-extensions false
+
 # gext install does not always enable — force-enable via CLI + gsettings
 for ext in "${EXTENSIONS[@]}"; do
   gnome-extensions enable "$ext" 2>/dev/null || true

@@ -6,6 +6,9 @@
 NOS_PATH="${NOS_PATH:-$HOME/.local/share/nos}"
 
 echo "==> Enabling NOS GNOME extensions (Space Bar = numbered workspaces)"
+# Stock dots appear when this is true — Space Bar never becomes ACTIVE
+gsettings set org.gnome.shell disable-user-extensions false
+
 gnome-extensions disable ubuntu-dock@ubuntu.com 2>/dev/null || true
 gnome-extensions disable ding@rastersoft.com 2>/dev/null || true
 gnome-extensions disable tiling-assistant@ubuntu.com 2>/dev/null || true
