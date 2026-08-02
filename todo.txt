@@ -1,0 +1,7 @@
+TODO
+1. make sure the nvim config is not a sym-link that it just simply copies nvim to ~/.config
+2. artura uses the same colors as the other themes still, look into that, probably just got to find a done theme and apply it for the wallpapers i want
+3. add acutal zo6, still only have regular c8
+4. scrolling in terminal is not smooth
+5. terminal transparency is a tinted color, right now all wallpapers are tinted red, make sure that when changing cars it is the main color of the car body, i.e. artura == orange tint
+

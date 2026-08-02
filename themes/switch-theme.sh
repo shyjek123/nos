@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Apply a NOS theme by slug (e.g. velocity, tokyo-night).
+# Apply a NOS theme by slug (e.g. tokyo-night, c8-base).
 # Usage: source themes/switch-theme.sh <theme-slug>
-#    or: THEME=velocity source themes/switch-theme.sh
+#    or: THEME=tokyo-night source themes/switch-theme.sh
 
 THEME="${1:-$THEME}"
 THEME=$(echo "$THEME" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')

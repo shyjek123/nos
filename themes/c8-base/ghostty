@@ -1,4 +1,4 @@
-# Corvette C8 Z06 — Omakub-style full ANSI 16 (all CLI colors inherit this).
+# Corvette C8 Base — Omakub-style full ANSI 16 (all CLI colors inherit this).
 # Racing red dominates via red/bright-red + cursor/selection (blue stays blue).
 
 background = #0e0a0c

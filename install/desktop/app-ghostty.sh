@@ -8,7 +8,7 @@ sudo apt install -y ghostty
 
 mkdir -p ~/.config/ghostty/themes
 cat >~/.config/ghostty/config <<'EOF'
-theme = c8-z06
+theme = c8-base
 font-family = CaskaydiaMono Nerd Font
 font-size = 10
 window-padding-x = 16
@@ -19,7 +19,7 @@ confirm-close-surface = false
 keybind = f11=toggle_fullscreen
 EOF
 
-# Default C8 Z06 full ANSI colorscheme
-cp "$NOS_PATH/themes/c8-z06/ghostty" ~/.config/ghostty/themes/c8-z06
+# Default C8 Base full ANSI colorscheme
+cp "$NOS_PATH/themes/c8-base/ghostty" ~/.config/ghostty/themes/c8-base
 
 source "$NOS_PATH/install/desktop/set-ghostty-default.sh"

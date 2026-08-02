@@ -63,10 +63,10 @@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5']" 2>/dev/null || true
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6']" 2>/dev/null || true
 
-echo "==> Applying C8 Z06 theme (Omakub-style single wallpaper + full ANSI terminal)"
+echo "==> Applying C8 Base theme (Omakub-style single wallpaper + full ANSI terminal)"
 rm -f "$HOME/.local/share/backgrounds/"*slideshow*.xml 2>/dev/null || true
 # shellcheck disable=SC1091
-source "$NOS_PATH/themes/switch-theme.sh" c8-z06
+source "$NOS_PATH/themes/switch-theme.sh" c8-base
 
 echo "==> Refreshing launchers / removing Omakub leftovers"
 # shellcheck disable=SC1091
@@ -75,4 +75,4 @@ source "$NOS_PATH/install/desktop/set-dock.sh" 2>/dev/null || true
 
 echo
 echo "Done. Press Alt+F2, type 'r', Enter (or log out/in) so GNOME reloads extensions."
-echo "Default theme: C8 Z06 (red). Switch to Artura anytime: nos → Theme."
+echo "Default theme: C8 Base (red). Switch to Artura anytime: nos → Theme."
