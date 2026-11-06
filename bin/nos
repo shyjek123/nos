@@ -1,4 +1,33 @@
 #!/bin/bash
 
+export NOS_PATH="${NOS_PATH:-$HOME/.local/share/nos}"
+
+# shellcheck disable=SC1091
 source "$NOS_PATH/bin/nos-sub/header.sh"
+
+if [[ $# -gt 0 ]]; then
+  # Direct subcommand: run once, then exit (do not reopen the TUI)
+  SUB=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+  case "$SUB" in
+  themes) SUB="theme" ;;
+  apps | app) SUB="install" ;;
+  remove) SUB="uninstall" ;;
+  manual) SUB="help" ;;
+  quit | exit) exit 0 ;;
+  esac
+
+  if [[ ! -f "$NOS_PATH/bin/nos-sub/$SUB.sh" ]]; then
+    echo "Unknown command: $SUB"
+    echo "Try: nos   (or: nos help)"
+    exit 1
+  fi
+
+  export NOS_FROM_CLI=1
+  # shellcheck disable=SC1090
+  source "$NOS_PATH/bin/nos-sub/$SUB.sh"
+  exit 0
+fi
+
+# Interactive menu
+# shellcheck disable=SC1091
 source "$NOS_PATH/bin/nos-sub/menu.sh"

@@ -30,7 +30,7 @@ set_font() {
 if [ "$#" -gt 1 ]; then
 	choice=${!#}
 else
-	choice=$(gum choose "Cascadia Mono" "Fira Mono" "JetBrains Mono" "Meslo" "> Change size" "<< Back" --height 8 --header "Choose your programming font")
+	choice=$(gum choose "Cascadia Mono" "Fira Mono" "JetBrains Mono" "Meslo" "> Change size" "<< Back" "Exit" --height 10 --header "Choose your programming font")
 fi
 
 case $choice in
@@ -47,9 +47,15 @@ case $choice in
 	set_font "MesloLGS Nerd Font" "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/Meslo.zip" "ttf"
 	;;
 "> Change size")
-	source $NOS_PATH/bin/nos-sub/font-size.sh
-	exit
+	source "$NOS_PATH/bin/nos-sub/font-size.sh"
+	return 0 2>/dev/null || exit 0
+	;;
+"Exit" | "")
+	return 0 2>/dev/null || exit 0
+	;;
+"<< Back")
 	;;
 esac
 
-source $NOS_PATH/bin/nos-sub/menu.sh
+# shellcheck disable=SC1091
+source "$NOS_PATH/bin/nos-sub/return.sh"

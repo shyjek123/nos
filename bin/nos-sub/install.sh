@@ -17,13 +17,15 @@ CHOICES=(
   "Web Apps          Install web apps with their own icon and shell"
   "> All             Re-run any of the default installers"
   "<< Back           "
+  "Exit              Leave NOS"
 )
 
-CHOICE=$(gum choose "${CHOICES[@]}" --height 20 --header "Install application")
+CHOICE=$(gum choose "${CHOICES[@]}" --height 22 --header "Install application")
 
-if [[ "$CHOICE" == "<< Back"* ]] || [[ -z "$CHOICE" ]]; then
-  # Don't install anything
-  echo ""
+if [[ -z "$CHOICE" || "$CHOICE" == "Exit"* ]]; then
+  return 0 2>/dev/null || exit 0
+elif [[ "$CHOICE" == "<< Back"* ]]; then
+  :
 elif [[ "$CHOICE" == "> All"* ]]; then
   INSTALLER_FILE=$(gum file "$NOS_PATH/install")
 
@@ -56,5 +58,5 @@ else
   fi
 fi
 
-clear
-source "$NOS_PATH/bin/nos"
+# shellcheck disable=SC1091
+source "$NOS_PATH/bin/nos-sub/return.sh"

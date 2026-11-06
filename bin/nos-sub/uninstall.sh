@@ -22,12 +22,15 @@ CHOICES=(
   "Web Apps          Chat GPT / Tailscale web launchers"
   "Zellij            Terminal multiplexer"
   "<< Back           "
+  "Exit              Leave NOS"
 )
 
-CHOICE=$(gum choose "${CHOICES[@]}" --height 22 --header "Uninstall")
+CHOICE=$(gum choose "${CHOICES[@]}" --height 24 --header "Uninstall")
 
-if [[ "$CHOICE" == "<< Back"* ]] || [[ -z "$CHOICE" ]]; then
-  echo ""
+if [[ -z "$CHOICE" || "$CHOICE" == "Exit"* ]]; then
+  return 0 2>/dev/null || exit 0
+elif [[ "$CHOICE" == "<< Back"* ]]; then
+  :
 else
   INSTALLER=$(echo "$CHOICE" | awk -F ' {2,}' '{print $1}' | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
 
@@ -57,5 +60,5 @@ else
   fi
 fi
 
-clear
-source "$NOS_PATH/bin/nos"
+# shellcheck disable=SC1091
+source "$NOS_PATH/bin/nos-sub/return.sh"

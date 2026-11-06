@@ -8,13 +8,15 @@ CHOICES=(
 	"Neovim        Text editor that runs in the terminal"
 	"Zellij        Adds panes, tabs, and sessions to the terminal"
 	"<< Back       "
+	"Exit          Leave NOS"
 )
 
-CHOICE=$(gum choose "${CHOICES[@]}" --height 10 --header "Update manually-managed applications")
+CHOICE=$(gum choose "${CHOICES[@]}" --height 12 --header "Update manually-managed applications")
 
-if [[ "$CHOICE" == "<< Back"* ]] || [[ -z "$CHOICE" ]]; then
-	# Don't update anything
-	echo ""
+if [[ -z "$CHOICE" || "$CHOICE" == "Exit"* ]]; then
+	return 0 2>/dev/null || exit 0
+elif [[ "$CHOICE" == "<< Back"* ]]; then
+	:
 else
 	INSTALLER=$(echo "$CHOICE" | awk -F ' {2,}' '{print $1}' | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
 
@@ -32,5 +34,5 @@ else
 	fi
 fi
 
-clear
-source "$NOS_PATH/bin/nos"
+# shellcheck disable=SC1091
+source "$NOS_PATH/bin/nos-sub/return.sh"
