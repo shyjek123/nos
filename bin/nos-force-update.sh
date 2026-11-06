@@ -3,14 +3,18 @@
 # Force-refresh ~/.local/share/nos from GitHub with no git pull / commit / stash.
 # Safe to download and run even when the install dir is a dirty git checkout.
 #
-#   curl -fsSL https://raw.githubusercontent.com/shyjek123/nos/main/bin/nos-force-update.sh | bash
-#   NOS_REF=cursor/fix-black-screen-2ef7 curl -fsSL \
-#     https://raw.githubusercontent.com/shyjek123/nos/refs/heads/cursor/fix-black-screen-2ef7/bin/nos-force-update.sh | bash
+# IMPORTANT: when piping to bash, put env vars AFTER the pipe (or pass the ref as $1):
+#   curl -fsSL .../nos-force-update.sh | NOS_REF=cursor/fix-black-screen-2ef7 bash
+#   curl -fsSL .../nos-force-update.sh | bash -s -- cursor/fix-black-screen-2ef7
+#
+# Wrong (NOS_REF only applies to curl, bash still uses main):
+#   NOS_REF=cursor/fix-black-screen-2ef7 curl ... | bash
 
 set -euo pipefail
 
 NOS_PATH="${NOS_PATH:-$HOME/.local/share/nos}"
-NOS_REF="${NOS_REF:-main}"
+# Prefer CLI arg (bash -s -- ref), then env, then main
+NOS_REF="${1:-${NOS_REF:-main}}"
 NOS_REPO="${NOS_REPO:-https://github.com/shyjek123/nos}"
 NOS_REPO="${NOS_REPO%.git}"
 
@@ -35,7 +39,7 @@ if [[ -z "$src" || ! -f "$src/install.sh" ]]; then
   exit 1
 fi
 
-mkdir -p "$NOS_PATH/state"
+mkdir -p "$NOS_PATH/state" 2>/dev/null || true
 
 # Remember prior update stamp / legacy git time for migrations
 if [[ -f "$NOS_PATH/state/updated-at" ]]; then
@@ -48,7 +52,10 @@ fi
 
 # Keep state/ across replace; drop everything else including .git
 preserve="$tmp/preserve-state"
-cp -a "$NOS_PATH/state" "$preserve" 2>/dev/null || mkdir -p "$preserve"
+mkdir -p "$preserve"
+if [[ -d "$NOS_PATH/state" ]]; then
+  cp -a "$NOS_PATH/state/." "$preserve/" 2>/dev/null || true
+fi
 
 # Remove dirty git checkout entirely from the equation
 rm -rf "$NOS_PATH"
@@ -56,8 +63,10 @@ mkdir -p "$NOS_PATH"
 cp -a "$src"/. "$NOS_PATH"/
 rm -rf "$NOS_PATH/.git"
 
-rm -rf "$NOS_PATH/state"
-cp -a "$preserve" "$NOS_PATH/state"
+mkdir -p "$NOS_PATH/state"
+if [[ -d "$preserve" ]]; then
+  cp -a "$preserve/." "$NOS_PATH/state/" 2>/dev/null || true
+fi
 
 cat >"$NOS_PATH/state/upstream" <<EOF
 repo=${NOS_REPO}
@@ -66,10 +75,9 @@ synced_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 EOF
 
 # Relink nos on PATH
-if [[ -f "$NOS_PATH/install/terminal/zz-nos-tui.sh" ]]; then
-  # shellcheck disable=SC1091
-  source "$NOS_PATH/install/terminal/zz-nos-tui.sh"
-fi
+mkdir -p "$HOME/.local/bin"
+ln -sfn "$NOS_PATH/bin/nos" "$HOME/.local/bin/nos"
+chmod +x "$NOS_PATH/bin/nos" 2>/dev/null || true
 
 export NOS_PATH
 echo "==> Running migrations after $last_updated_at..."
@@ -80,7 +88,7 @@ for file in "$NOS_PATH"/migrations/*.sh; do
   if [[ "$migrate_at" =~ ^[0-9]+$ ]] && (( migrate_at > last_updated_at )); then
     echo "=> migration $migrate_at"
     # shellcheck disable=SC1090
-    source "$file"
+    source "$file" || echo "WARNING: migration $migrate_at failed (continuing)"
   fi
 done
 shopt -u nullglob
@@ -92,12 +100,21 @@ rm -rf "$NOS_PATH/.git"
 if [[ -f "$NOS_PATH/install/desktop/ensure-alacritty-default.sh" ]]; then
   echo "==> Applying Alacritty default / removing Ghostty..."
   # shellcheck disable=SC1091
-  source "$NOS_PATH/install/desktop/ensure-alacritty-default.sh"
+  source "$NOS_PATH/install/desktop/ensure-alacritty-default.sh" || true
 else
-  echo "WARNING: ensure-alacritty-default.sh missing from archive (wrong NOS_REF?)."
-  echo "         Re-run with: NOS_REF=cursor/fix-black-screen-2ef7 ..."
+  echo "WARNING: ensure-alacritty-default.sh still missing."
+  echo "         You likely updated from the wrong ref (got: $NOS_REF)."
+  echo "         Re-run:"
+  echo "           curl -fsSL .../nos-force-update.sh | bash -s -- cursor/fix-black-screen-2ef7"
 fi
 
 echo "==> Done. $NOS_PATH is a plain folder (no git)."
-test -f "$NOS_PATH/install/desktop/ensure-alacritty-default.sh" && echo "    OK: ensure-alacritty-default.sh present"
+echo "    ref used: $NOS_REF"
+if [[ -f "$NOS_PATH/install/desktop/ensure-alacritty-default.sh" ]]; then
+  echo "    OK: ensure-alacritty-default.sh present"
+else
+  echo "    MISSING: ensure-alacritty-default.sh"
+fi
+command -v ghostty >/dev/null 2>&1 && echo "    WARNING: ghostty still on PATH: $(command -v ghostty)" || echo "    OK: ghostty not on PATH"
+command -v alacritty >/dev/null 2>&1 && echo "    OK: alacritty at $(command -v alacritty)" || echo "    WARNING: alacritty not on PATH"
 echo "    Next updates:  nos update"
