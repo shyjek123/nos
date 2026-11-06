@@ -1,5 +1,6 @@
 source ~/.local/share/nos/defaults/bash/shell
 source ~/.local/share/nos/defaults/bash/aliases
 source ~/.local/share/nos/defaults/bash/functions
-source ~/.local/share/nos/defaults/bash/prompt
 source ~/.local/share/nos/defaults/bash/init
+# Prompt last so mise/zoxide PROMPT_COMMAND hooks don't wipe it
+source ~/.local/share/nos/defaults/bash/prompt
