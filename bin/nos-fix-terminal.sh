@@ -12,7 +12,7 @@ NOS_PATH="${NOS_PATH:-$HOME/.local/share/nos}"
 mkdir -p "$HOME/.config/alacritty" "$HOME/.local/bin"
 
 cat >"$HOME/.config/alacritty/alacritty.toml" <<'EOF'
-# Emergency plain-bash shell (nos-fix-terminal). Re-run nos update / app-alacritty to restore Zellij.
+# Emergency plain-bash shell (nos-fix-terminal).
 [general]
 import = [
   "~/.config/alacritty/theme.toml",
@@ -43,12 +43,7 @@ for f in theme.toml font.toml font-size.toml shared.toml; do
   [[ -f "$HOME/.config/alacritty/$f" ]] || touch "$HOME/.config/alacritty/$f"
 done
 
-# Also refresh launcher from NOS when present (full fix)
-if [[ -f "$NOS_PATH/bin/nos-zellij.sh" ]]; then
-  chmod +x "$NOS_PATH/bin/nos-zellij.sh"
-  ln -sfn "$NOS_PATH/bin/nos-zellij.sh" "$HOME/.local/bin/nos-zellij"
-fi
+# Retire the old Zellij auto-attach launcher
+rm -f "$HOME/.local/bin/nos-zellij" "$HOME/.local/bin/nos-zellij.sh"
 
 echo "Alacritty will now open bash. Press Alt+t (or launch Alacritty)."
-echo "After NOS update, restore Zellij with:"
-echo "  source \"$NOS_PATH/install/desktop/app-alacritty.sh\""

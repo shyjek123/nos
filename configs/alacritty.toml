@@ -1,5 +1,5 @@
-# Main interactive terminal — Zellij session "default" via nos-zellij.
-# Absolute path + bash fallback so a missing wrapper never blink-closes Alacritty.
+# Main interactive terminal — plain shell, NOS rice via imports.
+# No custom [shell]: Alacritty uses its default shell. Zellij is manual-only.
 
 [general]
 import = [
@@ -7,13 +7,4 @@ import = [
   "~/.config/alacritty/font.toml",
   "~/.config/alacritty/font-size.toml",
   "~/.config/alacritty/shared.toml",
-]
-
-[shell]
-program = "/bin/bash"
-args = [
-  "--noprofile",
-  "--norc",
-  "-c",
-  "export PATH=\"$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH\"; if [ -x \"$HOME/.local/bin/nos-zellij\" ]; then exec \"$HOME/.local/bin/nos-zellij\"; fi; if command -v nos-zellij >/dev/null 2>&1; then exec nos-zellij; fi; exec /bin/bash -l",
 ]
