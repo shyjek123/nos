@@ -3,7 +3,7 @@
 export DEBIAN_FRONTEND=noninteractive
 
 sudo apt install -y \
-  rustc pipx libreadline-dev zlib1g-dev libyaml-dev libreadline-dev libncurses5-dev \
+  rustc pipx libreadline-dev zlib1g-dev libyaml-dev libreadline-dev libncurses-dev \
   libffi-dev libgdbm-dev libjemalloc2 libvips imagemagick libmagickwand-dev mupdf mupdf-tools \
   redis-tools sqlite3 libsqlite3-0 libmysqlclient-dev libpq-dev postgresql-client \
   postgresql-client-common
@@ -31,7 +31,7 @@ sudo apt install -y \
   qemu-system-x86 qemu-user qemu-user-static \
   patchelf checksec \
   python3-pip python3-venv pipx \
-  openjdk-21-jdk \
+  default-jdk \
   foremost testdisk \
   steghide exiftool \
   apktool \

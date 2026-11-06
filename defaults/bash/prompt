@@ -2,6 +2,14 @@
 force_color_prompt=yes
 color_prompt=yes
 
-# Simple prompt with path in the window/pane title and caret for typing line
-PS1=$'\uf0a9 '
-PS1="\[\e]0;\w\a\]$PS1"
+# Directory name only + git branch (when inside a repo)
+__nos_git_branch() {
+  local branch
+  branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null) \
+    || branch=$(git rev-parse --short HEAD 2>/dev/null) \
+    || return 0
+  printf ' (%s)' "$branch"
+}
+
+# Window title = full cwd; prompt = basename [branch] ->
+PS1='\[\e]0;\w\a\]\[\e[1;36m\]\W\[\e[0m\]\[\e[1;35m\]$(__nos_git_branch)\[\e[0m\] -> '

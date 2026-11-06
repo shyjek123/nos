@@ -1,13 +1,18 @@
 #!/bin/bash
 
-sudo apt install -y gnome-shell-extension-manager gir1.2-gtop-2.0 gir1.2-clutter-1.0
+sudo apt install -y gnome-shell-extension-manager gir1.2-gtop-2.0
+# Clutter gir may vanish on some releases — TopHat still works without it on recent GNOME
+sudo apt install -y gir1.2-clutter-1.0 2>/dev/null || true
 pipx install gnome-extensions-cli --system-site-packages
 
-# Turn off default Ubuntu extensions (ignore if not installed)
+# Turn off default Ubuntu extensions (ignore if not installed / renamed)
 gnome-extensions disable tiling-assistant@ubuntu.com 2>/dev/null || true
 gnome-extensions disable ubuntu-appindicators@ubuntu.com 2>/dev/null || true
 gnome-extensions disable ubuntu-dock@ubuntu.com 2>/dev/null || true
 gnome-extensions disable ding@rastersoft.com 2>/dev/null || true
+
+# GNOME 50 (Ubuntu 26.04): Space Bar needs extension v39+; allow install across shell bumps
+gsettings set org.gnome.shell disable-extension-version-validation true 2>/dev/null || true
 
 # Pause to assure user is ready to accept confirmations (must not abort install under set -e)
 if ! gum confirm "To install Gnome extensions, you need to accept some confirmations. Ready?"; then
@@ -25,9 +30,9 @@ EXTENSIONS=(
   AlphabeticalAppGrid@stuarthayhurst
 )
 
-# Install new extensions
+# Install / update extensions (Space Bar v39+ required for GNOME Shell 50)
 for ext in "${EXTENSIONS[@]}"; do
-  gext install "$ext" || echo "WARNING: gext install failed for $ext"
+  gext update "$ext" 2>/dev/null || gext install "$ext" || echo "WARNING: gext install failed for $ext"
 done
 
 # Compile gsettings schemas in order to be able to set them

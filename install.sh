@@ -27,7 +27,7 @@ nos_disable_sleep() {
   gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-type 'nothing' 2>/dev/null || true
   gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0 2>/dev/null || true
   gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-battery-timeout 0 2>/dev/null || true
-  # X11 fallbacks (no-op on pure Wayland)
+  # X11-only helpers (Ubuntu 26.04 GNOME is Wayland-only — these no-op there)
   xset s off 2>/dev/null || true
   xset -dpms 2>/dev/null || true
 }

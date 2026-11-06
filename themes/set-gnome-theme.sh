@@ -39,8 +39,10 @@ font-size = 10
 window-padding-x = 16
 window-padding-y = 14
 window-decoration = false
-background-opacity = 0.98
+background-opacity = 0.85
+background-opacity-cells = true
 confirm-close-surface = false
+mouse-scroll-multiplier = 1
 keybind = f11=toggle_fullscreen
 EOF
   else

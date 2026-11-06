@@ -3,7 +3,7 @@
 # Joplin — open-source note-taking (AppImage). Alt+n launches joplin-desktop.
 set -e
 
-# AppImages need libfuse2 (Ubuntu 24.04+ package is libfuse2t64)
+# AppImages need libfuse2 (Ubuntu 24.04/26.04 package is libfuse2t64)
 if ! ldconfig -p 2>/dev/null | grep -q 'libfuse.so.2'; then
   if apt-cache show libfuse2t64 &>/dev/null; then
     sudo apt install -y libfuse2t64

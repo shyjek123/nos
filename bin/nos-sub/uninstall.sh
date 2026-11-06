@@ -11,6 +11,7 @@ CHOICES=(
   "Ghidra            Reverse-engineering suite"
   "GitHub CLI        gh"
   "Joplin            Notes (Alt+n)"
+  "Kleopatra         GnuPG certificate manager"
   "LocalSend         LAN file sharing"
   "Neovim            Terminal editor + config"
   "Ollama            Local LLMs"

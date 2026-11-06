@@ -18,7 +18,7 @@ ascii_art='
 '
 
 echo -e "$ascii_art"
-echo "=> NOS is for fresh Ubuntu 24.04+ installations only!"
+echo "=> NOS is for fresh Ubuntu 24.04 / 26.04 LTS installations only!"
 echo -e "\nBegin installation (or abort with ctrl+c)..."
 
 sudo apt-get update >/dev/null

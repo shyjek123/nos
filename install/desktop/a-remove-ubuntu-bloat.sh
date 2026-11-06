@@ -91,13 +91,14 @@ BLOAT_SNAP_UI=(
   gnome-software-plugin-snap
 )
 
-# Branding / welcome / tour
+# Branding / welcome / tour (wallpaper suite package is release-codename specific)
 BLOAT_MISC=(
   gnome-initial-setup
   gnome-tour
   brand-ubuntu
   ubuntu-wallpapers
   ubuntu-wallpapers-noble
+  ubuntu-wallpapers-resolute
 )
 
 purge_list() {

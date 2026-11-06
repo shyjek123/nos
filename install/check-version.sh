@@ -8,7 +8,7 @@ fi
 
 . /etc/os-release
 
-# Check if running on Ubuntu 24.04 or higher (no bc dependency)
+# Ubuntu 24.04 LTS (Noble) or 26.04 LTS (Resolute) and newer
 version_at_least() {
   [ "$(printf '%s\n' "$2" "$1" | sort -V | head -n1)" = "$2" ]
 }
@@ -16,7 +16,7 @@ version_at_least() {
 if [ "$ID" != "ubuntu" ] || ! version_at_least "$VERSION_ID" "24.04"; then
   echo "$(tput setaf 1)Error: OS requirement not met"
   echo "You are currently running: $ID $VERSION_ID"
-  echo "OS required: Ubuntu 24.04 or higher"
+  echo "OS required: Ubuntu 24.04 LTS or 26.04 LTS (or higher)"
   echo "Installation stopped."
   exit 1
 fi

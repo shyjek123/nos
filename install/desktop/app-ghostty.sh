@@ -2,8 +2,13 @@
 
 # Ghostty — GPU-accelerated terminal (default for NOS)
 # https://ghostty.org/
-sudo add-apt-repository -y ppa:mkasberg/ghostty-ubuntu
+# Ubuntu 26.04+ ships Ghostty in universe; 24.04 needs the PPA.
+
 sudo apt update -y
+if ! apt-cache show ghostty &>/dev/null; then
+  sudo add-apt-repository -y ppa:mkasberg/ghostty-ubuntu
+  sudo apt update -y
+fi
 sudo apt install -y ghostty
 
 mkdir -p ~/.config/ghostty/themes
@@ -14,8 +19,10 @@ font-size = 10
 window-padding-x = 16
 window-padding-y = 14
 window-decoration = false
-background-opacity = 0.98
+background-opacity = 0.85
+background-opacity-cells = true
 confirm-close-surface = false
+mouse-scroll-multiplier = 1
 keybind = f11=toggle_fullscreen
 EOF
 
