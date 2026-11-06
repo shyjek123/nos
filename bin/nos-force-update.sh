@@ -88,5 +88,16 @@ shopt -u nullglob
 date +%s >"$NOS_PATH/state/updated-at"
 rm -rf "$NOS_PATH/.git"
 
+# Always enforce Alacritty default + remove Ghostty after refresh
+if [[ -f "$NOS_PATH/install/desktop/ensure-alacritty-default.sh" ]]; then
+  echo "==> Applying Alacritty default / removing Ghostty..."
+  # shellcheck disable=SC1091
+  source "$NOS_PATH/install/desktop/ensure-alacritty-default.sh"
+else
+  echo "WARNING: ensure-alacritty-default.sh missing from archive (wrong NOS_REF?)."
+  echo "         Re-run with: NOS_REF=cursor/fix-black-screen-2ef7 ..."
+fi
+
 echo "==> Done. $NOS_PATH is a plain folder (no git)."
+test -f "$NOS_PATH/install/desktop/ensure-alacritty-default.sh" && echo "    OK: ensure-alacritty-default.sh present"
 echo "    Next updates:  nos update"
