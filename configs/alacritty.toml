@@ -1,5 +1,5 @@
-# Main interactive terminal — starts NOS Zellij wrapper (session "default")
-# Use [general].import for Alacritty 0.13+; migrate keeps older formats working.
+# Main interactive terminal — Zellij session "default" via nos-zellij
+# Wrapper is linked to ~/.local/bin/nos-zellij by app-alacritty.sh
 
 [general]
 import = [
@@ -11,4 +11,4 @@ import = [
 
 [shell]
 program = "/bin/bash"
-args = ["-lc", "exec \"$HOME/.local/share/nos/bin/nos-zellij.sh\""]
+args = ["--noprofile", "--norc", "-c", "export PATH=\"$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH\"; exec nos-zellij"]

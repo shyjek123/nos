@@ -8,6 +8,17 @@ mkdir -p ~/.config/alacritty ~/.config/zellij/themes ~/.local/bin
 chmod +x "$NOS_PATH/bin/nos-zellij.sh"
 ln -sfn "$NOS_PATH/bin/nos-zellij.sh" "$HOME/.local/bin/nos-zellij"
 
+# Keep Zellij config healthy (KDL rejects # comments — that blinks Alacritty closed)
+mkdir -p ~/.config/zellij/themes
+if [[ -f "$NOS_PATH/configs/zellij.kdl" ]]; then
+  cp "$NOS_PATH/configs/zellij.kdl" ~/.config/zellij/config.kdl
+fi
+for theme_kdl in "$NOS_PATH"/themes/*/zellij.kdl; do
+  [[ -f "$theme_kdl" ]] || continue
+  name=$(basename "$(dirname "$theme_kdl")")
+  cp "$theme_kdl" ~/.config/zellij/themes/"$name".kdl
+done
+
 cp "$NOS_PATH/configs/alacritty.toml" ~/.config/alacritty/alacritty.toml
 cp "$NOS_PATH/configs/alacritty/shared.toml" ~/.config/alacritty/shared.toml
 cp "$NOS_PATH/configs/alacritty/pane.toml" ~/.config/alacritty/pane.toml
