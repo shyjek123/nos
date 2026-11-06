@@ -4,6 +4,19 @@
 sudo apt install -y alacritty
 mkdir -p ~/.config/alacritty ~/.config/zellij/themes ~/.local/bin
 
+# Capture the user's theme BEFORE anything overwrites zellij/config.kdl,
+# otherwise the template's theme always wins and the rice resets.
+ACTIVE_THEME=""
+if [[ -f "$HOME/.config/nos/theme" ]]; then
+  ACTIVE_THEME=$(tr -d '[:space:]' <"$HOME/.config/nos/theme")
+fi
+if [[ -z "$ACTIVE_THEME" && -f "$HOME/.config/zellij/config.kdl" ]]; then
+  ACTIVE_THEME=$(grep -Eo 'theme "[^"]+"' "$HOME/.config/zellij/config.kdl" 2>/dev/null | head -1 | cut -d'"' -f2 || true)
+fi
+[[ -n "$ACTIVE_THEME" && -d "$NOS_PATH/themes/$ACTIVE_THEME" ]] || ACTIVE_THEME="velocity"
+mkdir -p "$HOME/.config/nos"
+echo "$ACTIVE_THEME" >"$HOME/.config/nos/theme"
+
 # Zellij launcher on PATH for GUI/hotkey starts (minimal PATH)
 chmod +x "$NOS_PATH/bin/nos-zellij.sh"
 ln -sfn "$NOS_PATH/bin/nos-zellij.sh" "$HOME/.local/bin/nos-zellij"
@@ -26,11 +39,7 @@ cp "$NOS_PATH/configs/alacritty/btop.toml" ~/.config/alacritty/btop.toml
 cp "$NOS_PATH/configs/alacritty/fonts/CaskaydiaMono.toml" ~/.config/alacritty/font.toml
 cp "$NOS_PATH/configs/alacritty/font-size.toml" ~/.config/alacritty/font-size.toml
 
-# Prefer active NOS theme colors if present, else Velocity (Ghostty-era default)
-ACTIVE_THEME="velocity"
-if [[ -f "$HOME/.config/zellij/config.kdl" ]]; then
-  ACTIVE_THEME=$(grep -Eo 'theme "[^"]+"' "$HOME/.config/zellij/config.kdl" 2>/dev/null | head -1 | cut -d'"' -f2 || echo velocity)
-fi
+# Theme resolved at the top of this script (before config.kdl was overwritten)
 if [[ -f "$NOS_PATH/themes/$ACTIVE_THEME/alacritty.toml" ]]; then
   cp "$NOS_PATH/themes/$ACTIVE_THEME/alacritty.toml" ~/.config/alacritty/theme.toml
 else

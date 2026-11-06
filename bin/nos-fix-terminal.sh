@@ -26,7 +26,19 @@ program = "/bin/bash"
 args = ["-l"]
 EOF
 
-# Keep imports from breaking if theme/font files are missing
+# Never leave import targets empty — an empty theme.toml is the boring
+# terminal. Fill any missing/empty file with the real NOS rice.
+if [[ -f "$NOS_PATH/configs/alacritty/shared.toml" ]]; then
+  [[ -s "$HOME/.config/alacritty/shared.toml" ]] || cp "$NOS_PATH/configs/alacritty/shared.toml" "$HOME/.config/alacritty/shared.toml"
+  [[ -s "$HOME/.config/alacritty/font.toml" ]] || cp "$NOS_PATH/configs/alacritty/fonts/CaskaydiaMono.toml" "$HOME/.config/alacritty/font.toml"
+  [[ -s "$HOME/.config/alacritty/font-size.toml" ]] || cp "$NOS_PATH/configs/alacritty/font-size.toml" "$HOME/.config/alacritty/font-size.toml"
+  if [[ ! -s "$HOME/.config/alacritty/theme.toml" ]]; then
+    EM_THEME="velocity"
+    [[ -f "$HOME/.config/nos/theme" ]] && EM_THEME=$(tr -d '[:space:]' <"$HOME/.config/nos/theme")
+    [[ -f "$NOS_PATH/themes/$EM_THEME/alacritty.toml" ]] || EM_THEME="velocity"
+    cp "$NOS_PATH/themes/$EM_THEME/alacritty.toml" "$HOME/.config/alacritty/theme.toml"
+  fi
+fi
 for f in theme.toml font.toml font-size.toml shared.toml; do
   [[ -f "$HOME/.config/alacritty/$f" ]] || touch "$HOME/.config/alacritty/$f"
 done

@@ -12,6 +12,10 @@ if [[ -z "$THEME" || "$THEME" == "<<-back" ]]; then
   return 0 2>/dev/null || exit 0
 fi
 
+# Remember choice so reinstalls / rice restores keep this exact theme
+mkdir -p "$HOME/.config/nos"
+echo "$THEME" >"$HOME/.config/nos/theme"
+
 THEME_DIR="$NOS_ROOT/themes/$THEME"
 if [[ ! -d "$THEME_DIR" ]]; then
   echo "Unknown theme: $THEME"
