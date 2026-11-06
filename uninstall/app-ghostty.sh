@@ -16,5 +16,6 @@ if command -v alacritty >/dev/null; then
       "$f" 2>/dev/null || true
   done
   # Alt+t terminal hotkey (custom2 in set-gnome-hotkeys.sh)
+  gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ name 'New Alacritty Window' 2>/dev/null || true
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/ command 'alacritty' 2>/dev/null || true
 fi

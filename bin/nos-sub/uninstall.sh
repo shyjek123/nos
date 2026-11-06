@@ -2,12 +2,12 @@
 
 CHOICES=(
   "NOS               Remove NOS config, launchers, and ~/.local/share/nos"
-  "Alacritty         Fallback terminal"
+  "Alacritty         Default terminal"
   "Cursor            AI code editor"
   "Docker            Docker Engine + LazyDocker launcher"
   "Dev Language      Uninstall selected programming languages"
   "Firefox           Default browser"
-  "Ghostty           Default terminal"
+  "Ghostty           Terminal emulator"
   "Ghidra            Reverse-engineering suite"
   "GitHub CLI        gh"
   "Joplin            Notes (Alt+n)"

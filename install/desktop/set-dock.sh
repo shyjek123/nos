@@ -3,7 +3,7 @@
 # Favorite apps for dock (only pinned if the .desktop file exists)
 apps=(
 	"firefox.desktop"
-	"com.mitchellh.ghostty.desktop"
+	"Alacritty.desktop"
 	"Neovim.desktop"
 	"code.desktop"
 	"Ghidra.desktop"

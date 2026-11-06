@@ -28,24 +28,9 @@ if [[ ! -f "$HOME/.config/btop/btop.conf" && -f "$NOS_ROOT/configs/btop.conf" ]]
   cp "$NOS_ROOT/configs/btop.conf" ~/.config/btop/btop.conf
 fi
 
-# Alacritty (About / Activity / fallback terminal)
+# Alacritty (default terminal)
 if [[ -d "$HOME/.config/alacritty" && -f "$THEME_DIR/alacritty.toml" ]]; then
   cp "$THEME_DIR/alacritty.toml" ~/.config/alacritty/theme.toml
-fi
-
-# Ghostty (default terminal) — same loader as set-gnome-theme.sh / Omakub Alacritty flow
-if [[ -f "$THEME_DIR/ghostty" ]]; then
-  mkdir -p "$HOME/.config/ghostty/themes"
-  cp "$THEME_DIR/ghostty" "$HOME/.config/ghostty/themes/$THEME"
-  cp "$THEME_DIR/ghostty" "$HOME/.config/ghostty/theme"
-  if [[ -f "$HOME/.config/ghostty/config" ]]; then
-    sed -i '/^config-file[[:space:]]*=/d' "$HOME/.config/ghostty/config"
-    if grep -q '^theme[[:space:]]*=' "$HOME/.config/ghostty/config"; then
-      sed -i "s|^theme[[:space:]]*=.*|theme = ${THEME}|" "$HOME/.config/ghostty/config"
-    else
-      sed -i "1i theme = ${THEME}" "$HOME/.config/ghostty/config"
-    fi
-  fi
 fi
 
 # Zellij (manual sessions)

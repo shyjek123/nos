@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Alacritty is kept as a lightweight terminal for About / Activity panes.
-# Ghostty remains the default interactive terminal.
+# Alacritty is the default terminal. shared.toml attaches new windows to Zellij.
 sudo apt install -y alacritty
 mkdir -p ~/.config/alacritty
 cp "$NOS_PATH/configs/alacritty.toml" ~/.config/alacritty/alacritty.toml
@@ -16,3 +15,8 @@ cp "$NOS_PATH/configs/alacritty/font-size.toml" ~/.config/alacritty/font-size.to
 alacritty migrate 2>/dev/null || true
 alacritty migrate -c ~/.config/alacritty/pane.toml 2>/dev/null || true
 alacritty migrate -c ~/.config/alacritty/btop.toml 2>/dev/null || true
+
+if [ -x /usr/bin/alacritty ]; then
+  sudo update-alternatives --install /usr/bin/x-terminal-emulator x-terminal-emulator /usr/bin/alacritty 50
+  sudo update-alternatives --set x-terminal-emulator /usr/bin/alacritty
+fi
