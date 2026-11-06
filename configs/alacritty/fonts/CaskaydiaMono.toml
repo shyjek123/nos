@@ -1,4 +1,8 @@
+# Same family Ghostty used: CaskaydiaMono Nerd Font
 [font]
 normal = { family = "CaskaydiaMono Nerd Font", style = "Regular" }
 bold = { family = "CaskaydiaMono Nerd Font", style = "Bold" }
 italic = { family = "CaskaydiaMono Nerd Font", style = "Italic" }
+bold_italic = { family = "CaskaydiaMono Nerd Font", style = "Bold Italic" }
+offset = { x = 0, y = 1 }
+glyph_offset = { x = 0, y = 0 }

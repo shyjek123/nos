@@ -1,16 +1,25 @@
+# Shared Alacritty look (Ghostty-parity): font padding, opacity, chrome.
+# Shell/zellij is NOT set here — only the main alacritty.toml starts Zellij,
+# so About / Activity / Nos / Neovim panes stay plain shells.
+
 [env]
 TERM = "xterm-256color"
-
-[shell]
-program = "zellij"
 
 [window]
 padding.x = 16
 padding.y = 14
 decorations = "None"
 opacity = 0.98
+dynamic_title = true
+
+[scrolling]
+history = 10000
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 550
 
 [keyboard]
 bindings = [
-{ key = "F11", action = "ToggleFullscreen" }
+  { key = "F11", action = "ToggleFullscreen" }
 ]

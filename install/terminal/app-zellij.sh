@@ -8,5 +8,10 @@ rm zellij.tar.gz zellij
 cd -
 
 mkdir -p ~/.config/zellij/themes
-[ ! -f "$HOME/.config/zellij/config.kdl" ] && cp ~/.local/share/nos/configs/zellij.kdl ~/.config/zellij/config.kdl
-cp ~/.local/share/nos/themes/tokyo-night/zellij.kdl ~/.config/zellij/themes/tokyo-night.kdl
+cp "${NOS_PATH:-$HOME/.local/share/nos}/configs/zellij.kdl" ~/.config/zellij/config.kdl
+# Seed every theme so switching works offline
+for theme_kdl in "${NOS_PATH:-$HOME/.local/share/nos}"/themes/*/zellij.kdl; do
+  [[ -f "$theme_kdl" ]] || continue
+  name=$(basename "$(dirname "$theme_kdl")")
+  cp "$theme_kdl" ~/.config/zellij/themes/"$name".kdl
+done

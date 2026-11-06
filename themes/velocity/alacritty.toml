@@ -1,10 +1,10 @@
-[colors]
+# Auto-synced from ghostty + wallpaper harmony for velocity
 [colors.primary]
-background = '#0c0a0b'
+background = '#0b0909'
 foreground = '#e8e0d8'
 
 [colors.cursor]
-text = '#0c0a0b'
+text = '#0b0909'
 cursor = '#ff4d4d'
 
 [colors.selection]

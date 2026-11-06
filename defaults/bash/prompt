@@ -2,6 +2,45 @@
 force_color_prompt=yes
 color_prompt=yes
 
-# Simple prompt with path in the window/pane title and caret for typing line
-PS1=$'\uf0a9 '
-PS1="\[\e]0;\w\a\]$PS1"
+# cwd + git branch / dirty / ahead-behind when inside a repo
+__nos_git_prompt() {
+  local git_dir branch status dirty ahead behind remote marks
+  git_dir=$(git rev-parse --git-dir 2>/dev/null) || return 0
+  branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null \
+    || git describe --tags --exact-match 2>/dev/null \
+    || git rev-parse --short HEAD 2>/dev/null) || return 0
+
+  dirty=""
+  if ! git diff --quiet --ignore-submodules -- 2>/dev/null \
+    || ! git diff --cached --quiet --ignore-submodules -- 2>/dev/null; then
+    dirty="*"
+  elif [[ -n "$(git ls-files --others --exclude-standard 2>/dev/null)" ]]; then
+    dirty="*"
+  fi
+
+  marks=""
+  remote=$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || true)
+  if [[ -n "$remote" ]]; then
+    ahead=$(git rev-list --count '@{u}..HEAD' 2>/dev/null || echo 0)
+    behind=$(git rev-list --count 'HEAD..@{u}' 2>/dev/null || echo 0)
+    [[ "${ahead:-0}" -gt 0 ]] && marks+="↑${ahead}"
+    [[ "${behind:-0}" -gt 0 ]] && marks+="↓${behind}"
+  fi
+
+  status="${branch}${dirty}${marks}"
+  printf ' (%s)' "$status"
+}
+
+__nos_prompt_command() {
+  local cwd gitbit arrow
+  cwd='\w'
+  gitbit="$(__nos_git_prompt)"
+  # Nerd Font / private-use arrow (same glyph NOS used before)
+  arrow=$'\uf0a9'
+  # window title = cwd
+  PS1="\[\e]0;\w\a\]\[\e[1;36m\]${cwd}\[\e[0m\]\[\e[1;35m\]${gitbit}\[\e[0m\] ${arrow} "
+}
+
+if [[ "${PROMPT_COMMAND:-}" != *"__nos_prompt_command"* ]]; then
+  PROMPT_COMMAND="__nos_prompt_command${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+fi

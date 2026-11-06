@@ -1,6 +1,8 @@
 theme "tokyo-night"
 default_layout "compact"
-on_force_close "quit"
+# Keep named sessions alive when the terminal window closes so
+# `zellij attach --create default` always returns to the same workspace.
+on_force_close "detach"
 
 default_mode "locked"
 keybinds clear-defaults=true {
@@ -125,7 +127,15 @@ keybinds clear-defaults=true {
             }
             SwitchToMode "locked"
         }
+        # Session picker — switch from "default" to any other named session
         bind "w" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            }
+            SwitchToMode "locked"
+        }
+        bind "s" {
             LaunchOrFocusPlugin "session-manager" {
                 floating true
                 move_to_focused_tab true

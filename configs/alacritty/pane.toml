@@ -1,6 +1,16 @@
-# Used by the About.desktop, Activity.desktop, Docker.desktop, Nos.desktop, and Neovim.desktop apps
-import = [ "~/.config/alacritty/theme.toml", "~/.config/alacritty/font.toml", "~/.config/alacritty/font-size.toml", "~/.config/alacritty/shared.toml" ]
+# Used by About / Activity / Docker / Nos / Neovim launchers (no Zellij)
+import = [
+  "~/.config/alacritty/theme.toml",
+  "~/.config/alacritty/font.toml",
+  "~/.config/alacritty/font-size.toml",
+  "~/.config/alacritty/shared.toml",
+]
 
 [window]
 padding.x = 30
 padding.y = 30
+
+# Explicit shell so we never inherit Zellij from an older shared.toml
+[shell]
+program = "/bin/bash"
+args = ["-l"]
