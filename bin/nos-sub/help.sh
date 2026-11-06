@@ -14,8 +14,9 @@ gum style --border rounded --padding "0 2" --border-foreground 51 \
 	"If the desktop is black after install, from a TTY (Ctrl+Alt+F3):" \
 	"  bash ~/.local/share/nos/bin/recover-desktop.sh --reboot" \
 	"" \
-	"Install root: $NOS_PATH" \
-	"Projects dir: ${NOS_PROJECTS_DIR:-$HOME/projects}"
+	"Install root: $NOS_PATH  (plain folder; nos update syncs it)" \
+	"Projects dir: ${NOS_PROJECTS_DIR:-$HOME/projects}" \
+	"Your git projects stay under ~/projects — not inside NOS." \
 
 echo
 if [[ "${NOS_FROM_CLI:-}" == "1" ]]; then
