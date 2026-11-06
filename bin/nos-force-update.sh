@@ -96,25 +96,7 @@ shopt -u nullglob
 date +%s >"$NOS_PATH/state/updated-at"
 rm -rf "$NOS_PATH/.git"
 
-# Always enforce Alacritty default + remove Ghostty after refresh
-if [[ -f "$NOS_PATH/install/desktop/ensure-alacritty-default.sh" ]]; then
-  echo "==> Applying Alacritty default / removing Ghostty..."
-  # shellcheck disable=SC1091
-  source "$NOS_PATH/install/desktop/ensure-alacritty-default.sh" || true
-else
-  echo "WARNING: ensure-alacritty-default.sh still missing."
-  echo "         You likely updated from the wrong ref (got: $NOS_REF)."
-  echo "         Re-run:"
-  echo "           curl -fsSL .../nos-force-update.sh | bash -s -- cursor/fix-black-screen-2ef7"
-fi
-
 echo "==> Done. $NOS_PATH is a plain folder (no git)."
 echo "    ref used: $NOS_REF"
-if [[ -f "$NOS_PATH/install/desktop/ensure-alacritty-default.sh" ]]; then
-  echo "    OK: ensure-alacritty-default.sh present"
-else
-  echo "    MISSING: ensure-alacritty-default.sh"
-fi
-command -v ghostty >/dev/null 2>&1 && echo "    WARNING: ghostty still on PATH: $(command -v ghostty)" || echo "    OK: ghostty not on PATH"
-command -v alacritty >/dev/null 2>&1 && echo "    OK: alacritty at $(command -v alacritty)" || echo "    WARNING: alacritty not on PATH"
+command -v alacritty >/dev/null 2>&1 && echo "    OK: alacritty at $(command -v alacritty)" || echo "    NOTE: alacritty not on PATH yet"
 echo "    Next updates:  nos update"

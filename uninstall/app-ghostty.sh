@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Uninstall Ghostty completely and point NOS at Alacritty
+# Optional / one-time uninstaller — not run on every nos update.
+# Uninstall Ghostty and point hotkeys/launchers at Alacritty.
 
 export DEBIAN_FRONTEND=noninteractive
 
