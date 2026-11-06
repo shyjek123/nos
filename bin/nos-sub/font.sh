@@ -22,12 +22,6 @@ set_font() {
 	if [[ -d "$HOME/.config/alacritty" ]]; then
 		cp "$NOS_PATH/configs/alacritty/fonts/$file_name.toml" ~/.config/alacritty/font.toml
 	fi
-	if [[ -f "$HOME/.config/ghostty/config" ]]; then
-		sed -i "s/^font-family = .*/font-family = $font_name/" ~/.config/ghostty/config
-		if ! grep -q '^font-family = ' ~/.config/ghostty/config; then
-			echo "font-family = $font_name" >>~/.config/ghostty/config
-		fi
-	fi
 	if [[ -f "$HOME/.config/Code/User/settings.json" ]]; then
 		sed -i "s/\"editor.fontFamily\": \".*\"/\"editor.fontFamily\": \"$font_name\"/g" ~/.config/Code/User/settings.json
 	fi

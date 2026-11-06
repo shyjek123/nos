@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# Alacritty is kept as a lightweight terminal for About / Activity panes.
-# Ghostty remains the default interactive terminal.
+# Alacritty — default NOS terminal (About / Activity panes + interactive shell)
 sudo apt install -y alacritty
 mkdir -p ~/.config/alacritty
 cp "$NOS_PATH/configs/alacritty.toml" ~/.config/alacritty/alacritty.toml
@@ -12,7 +11,9 @@ cp "$NOS_PATH/themes/velocity/alacritty.toml" ~/.config/alacritty/theme.toml
 cp "$NOS_PATH/configs/alacritty/fonts/CaskaydiaMono.toml" ~/.config/alacritty/font.toml
 cp "$NOS_PATH/configs/alacritty/font-size.toml" ~/.config/alacritty/font-size.toml
 
-# Migrate config format if needed
+# Migrate config format if needed (Alacritty 0.13+)
 alacritty migrate 2>/dev/null || true
 alacritty migrate -c ~/.config/alacritty/pane.toml 2>/dev/null || true
 alacritty migrate -c ~/.config/alacritty/btop.toml 2>/dev/null || true
+
+source "$NOS_PATH/install/desktop/set-alacritty-default.sh"

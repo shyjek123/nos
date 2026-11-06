@@ -26,9 +26,9 @@ if [ ! -d "$HOME/.config/nvim" ]; then
   fi
 fi
 
-# Replace desktop launcher with one running inside Ghostty
+# Replace desktop launcher with one running inside Alacritty
 if [[ -d ~/.local/share/applications ]]; then
   sudo rm -rf /usr/share/applications/nvim.desktop
   sudo rm -rf /usr/local/share/applications/nvim.desktop
-  source ~/.local/share/nos/applications/Neovim.sh
+  source "$NOS_PATH/applications/Neovim.sh"
 fi

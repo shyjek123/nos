@@ -28,14 +28,9 @@ if [[ ! -f "$HOME/.config/btop/btop.conf" && -f "$NOS_ROOT/configs/btop.conf" ]]
   cp "$NOS_ROOT/configs/btop.conf" ~/.config/btop/btop.conf
 fi
 
-# Alacritty (About / Activity / fallback terminal)
+# Alacritty (default terminal + About / Activity panes)
 if [[ -d "$HOME/.config/alacritty" && -f "$THEME_DIR/alacritty.toml" ]]; then
   cp "$THEME_DIR/alacritty.toml" ~/.config/alacritty/theme.toml
-fi
-
-# Ghostty (default terminal)
-if [[ -d "$HOME/.config/ghostty" && -f "$THEME_DIR/ghostty" ]]; then
-  cp "$THEME_DIR/ghostty" ~/.config/ghostty/theme
 fi
 
 # Zellij (manual sessions)

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Ghostty is the default terminal (was Alacritty); skip re-asserting Alacritty.
-if [ -x /usr/bin/ghostty ] && [ -f "$NOS_PATH/install/desktop/set-ghostty-default.sh" ]; then
-	source "$NOS_PATH/install/desktop/set-ghostty-default.sh"
+# Historical: briefly preferred Ghostty. Current default is Alacritty again.
+if [ -x /usr/bin/alacritty ] && [ -f "$NOS_PATH/install/desktop/set-alacritty-default.sh" ]; then
+	source "$NOS_PATH/install/desktop/set-alacritty-default.sh"
 fi
 
 nautilus -q

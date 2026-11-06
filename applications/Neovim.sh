@@ -5,7 +5,7 @@ cat <<EOF >~/.local/share/applications/Neovim.desktop
 Version=1.0
 Name=Neovim
 Comment=Edit text files
-Exec=ghostty --class=Neovim -o window-padding-x=30 -o window-padding-y=30 -e nvim %F
+Exec=alacritty --class Neovim --title Neovim -e nvim %F
 Terminal=false
 Type=Application
 Icon=nvim
