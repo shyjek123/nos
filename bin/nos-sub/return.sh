@@ -5,6 +5,8 @@
 # - Interactive TUI: show the main menu again (without re-running a subcommand)
 
 if [[ "${NOS_FROM_CLI:-}" == "1" ]]; then
+  # shellcheck disable=SC1091
+  source "$NOS_PATH/bin/nos-sub/exit-nos.sh"
   return 0 2>/dev/null || exit 0
 fi
 

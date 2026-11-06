@@ -23,6 +23,8 @@ CHOICES=(
 CHOICE=$(gum choose "${CHOICES[@]}" --height 22 --header "Install application")
 
 if [[ -z "$CHOICE" || "$CHOICE" == "Exit"* ]]; then
+  # shellcheck disable=SC1091
+  source "$NOS_PATH/bin/nos-sub/exit-nos.sh"
   return 0 2>/dev/null || exit 0
 elif [[ "$CHOICE" == "<< Back"* ]]; then
   :

@@ -24,8 +24,10 @@ manual) SUB="help" ;;
 quit) SUB="exit" ;;
 esac
 
-# Empty selection (Esc/Ctrl+C) or Exit → leave NOS
+# Empty selection (Esc/Ctrl+C) or Exit → leave NOS with a clean screen
 if [[ -z "$SUB" || "$SUB" == "exit" ]]; then
+	# shellcheck disable=SC1091
+	source "$NOS_PATH/bin/nos-sub/exit-nos.sh"
 	return 0 2>/dev/null || exit 0
 fi
 

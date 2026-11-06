@@ -51,6 +51,8 @@ case $choice in
 	return 0 2>/dev/null || exit 0
 	;;
 "Exit" | "")
+	# shellcheck disable=SC1091
+	source "$NOS_PATH/bin/nos-sub/exit-nos.sh"
 	return 0 2>/dev/null || exit 0
 	;;
 "<< Back")

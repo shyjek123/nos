@@ -13,7 +13,10 @@ if [[ $# -gt 0 ]]; then
   apps | app) SUB="install" ;;
   remove) SUB="uninstall" ;;
   manual) SUB="help" ;;
-  quit | exit) exit 0 ;;
+  quit | exit)
+    clear
+    exit 0
+    ;;
   esac
 
   if [[ ! -f "$NOS_PATH/bin/nos-sub/$SUB.sh" ]]; then
@@ -25,9 +28,12 @@ if [[ $# -gt 0 ]]; then
   export NOS_FROM_CLI=1
   # shellcheck disable=SC1090
   source "$NOS_PATH/bin/nos-sub/$SUB.sh"
+  clear
   exit 0
 fi
 
 # Interactive menu
 # shellcheck disable=SC1091
 source "$NOS_PATH/bin/nos-sub/menu.sh"
+# If the menu returns (Exit), ensure the screen is clean
+clear

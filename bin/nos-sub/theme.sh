@@ -4,6 +4,8 @@ THEME_NAMES=("Velocity" "Tokyo Night" "Catppuccin" "Nord" "Everforest" "Gruvbox"
 THEME=$(gum choose "${THEME_NAMES[@]}" "<< Back" "Exit" --header "Choose your theme" --height 14 | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
 
 if [[ -z "$THEME" || "$THEME" == "exit" ]]; then
+  # shellcheck disable=SC1091
+  source "$NOS_PATH/bin/nos-sub/exit-nos.sh"
   return 0 2>/dev/null || exit 0
 fi
 
