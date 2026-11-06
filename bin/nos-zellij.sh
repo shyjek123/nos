@@ -1,28 +1,28 @@
 #!/bin/bash
 
-# Launcher used by Alacritty so GUI/hotkey starts still find Zellij.
-# Falls back to a login bash if Zellij is missing or fails (avoids blink-and-close).
+# Alacritty login shell → always join Zellij session "default".
+# Creates the session on first launch; later windows re-attach to it.
 
 export PATH="/usr/local/bin:/usr/bin:/bin:${HOME}/.local/bin:${PATH}"
+export NOS_PATH="${NOS_PATH:-$HOME/.local/share/nos}"
 
-# Prefer a stable named session; create it if needed.
-if command -v zellij >/dev/null 2>&1; then
-  # Older/newer CLI quirks: try attach --create, then plain session start.
-  if zellij attach --create default 2>/tmp/nos-zellij.err; then
-    exit 0
-  fi
-  # Session exists but attach flag unsupported — try attach only, then create.
-  if zellij attach default 2>>/tmp/nos-zellij.err; then
-    exit 0
-  fi
-  if zellij -s default 2>>/tmp/nos-zellij.err; then
-    exit 0
-  fi
-  # Last resort: any zellij session rather than a blank flash
-  if zellij 2>>/tmp/nos-zellij.err; then
-    exit 0
-  fi
-  echo "nos-zellij: zellij failed; see /tmp/nos-zellij.err" >&2
+ZELLIJ_BIN="$(command -v zellij || true)"
+if [[ -z "$ZELLIJ_BIN" && -x /usr/local/bin/zellij ]]; then
+  ZELLIJ_BIN=/usr/local/bin/zellij
 fi
 
-exec /bin/bash -l
+if [[ -z "$ZELLIJ_BIN" ]]; then
+  echo "nos-zellij: zellij not installed; falling back to bash" >&2
+  exec /bin/bash -l
+fi
+
+# Prefer NOS config if present (avoids a broken user config blocking startup)
+CFG=()
+if [[ -f "$HOME/.config/zellij/config.kdl" ]]; then
+  CFG=(--config "$HOME/.config/zellij/config.kdl")
+elif [[ -f "$NOS_PATH/configs/zellij.kdl" ]]; then
+  CFG=(--config "$NOS_PATH/configs/zellij.kdl")
+fi
+
+# Primary path: attach or create the named session
+exec "$ZELLIJ_BIN" "${CFG[@]}" attach --create default
