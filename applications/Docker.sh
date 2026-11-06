@@ -5,7 +5,7 @@ cat <<EOF >~/.local/share/applications/Docker.desktop
 Version=1.0
 Name=Docker
 Comment=Manage Docker containers with LazyDocker
-Exec=ghostty --class=Docker -o window-padding-x=30 -o window-padding-y=30 -e lazydocker
+Exec=alacritty --config-file /home/$USER/.config/alacritty/pane.toml --class=Docker --title=Docker -e lazydocker
 Terminal=false
 Type=Application
 Icon=/home/$USER/.local/share/nos/applications/icons/Docker.png
