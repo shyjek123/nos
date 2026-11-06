@@ -19,6 +19,14 @@ fi
 
 echo "Updating NOS install at $NOS_PATH..."
 
+# If a legacy dirty .git checkout is blocking life, prefer the force updater
+# (archive download — never git pull / commit / stash).
+if [[ -d "$NOS_PATH/.git" ]]; then
+  echo "Legacy git checkout detected — refreshing from archive (no pull/stash)..."
+  bash "$NOS_PATH/bin/nos-force-update.sh"
+  return 0 2>/dev/null || exit 0
+fi
+
 # Run sync as a separate process so set -euo / traps do not leak into this shell
 bash "$NOS_PATH/bin/nos-sub/sync-from-upstream.sh"
 
