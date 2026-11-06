@@ -1,4 +1,5 @@
 # Used by About / Activity / Docker / Nos / Neovim launchers (no Zellij)
+[general]
 import = [
   "~/.config/alacritty/theme.toml",
   "~/.config/alacritty/font.toml",
@@ -10,7 +11,6 @@ import = [
 padding.x = 30
 padding.y = 30
 
-# Explicit shell so we never inherit Zellij from an older shared.toml
 [shell]
 program = "/bin/bash"
 args = ["-l"]

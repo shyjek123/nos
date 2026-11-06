@@ -1,6 +1,4 @@
-# Shared Alacritty look (Ghostty-parity): font padding, opacity, chrome.
-# Shell/zellij is NOT set here — only the main alacritty.toml starts Zellij,
-# so About / Activity / Nos / Neovim panes stay plain shells.
+# Shared Alacritty look (Ghostty-parity). No [shell] here — panes stay plain bash.
 
 [env]
 TERM = "xterm-256color"
@@ -16,7 +14,7 @@ dynamic_title = true
 history = 10000
 
 [cursor]
-style = { shape = "Block", blinking = "On" }
+style = "Block"
 blink_interval = 550
 
 [keyboard]

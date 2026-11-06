@@ -1,4 +1,7 @@
-# Main interactive terminal — Zellij session "default" (create or attach)
+# Main interactive terminal — starts NOS Zellij wrapper (session "default")
+# Use [general].import for Alacritty 0.13+; migrate keeps older formats working.
+
+[general]
 import = [
   "~/.config/alacritty/theme.toml",
   "~/.config/alacritty/font.toml",
@@ -7,5 +10,5 @@ import = [
 ]
 
 [shell]
-program = "zellij"
-args = ["attach", "--create", "default"]
+program = "/bin/bash"
+args = ["-lc", "exec \"$HOME/.local/share/nos/bin/nos-zellij.sh\""]

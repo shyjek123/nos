@@ -2,7 +2,11 @@
 
 # Alacritty — default NOS terminal (About / Activity panes + interactive shell)
 sudo apt install -y alacritty
-mkdir -p ~/.config/alacritty ~/.config/zellij/themes
+mkdir -p ~/.config/alacritty ~/.config/zellij/themes ~/.local/bin
+
+# Zellij launcher on PATH for GUI/hotkey starts (minimal PATH)
+chmod +x "$NOS_PATH/bin/nos-zellij.sh"
+ln -sfn "$NOS_PATH/bin/nos-zellij.sh" "$HOME/.local/bin/nos-zellij"
 
 cp "$NOS_PATH/configs/alacritty.toml" ~/.config/alacritty/alacritty.toml
 cp "$NOS_PATH/configs/alacritty/shared.toml" ~/.config/alacritty/shared.toml
