@@ -14,3 +14,12 @@ if command -v fzf &> /dev/null; then
     source /usr/share/doc/fzf/examples/key-bindings.bash
   fi
 fi
+
+# Alacritty completions only if the file exists (never force a ~/alacritty source-build path)
+if [[ -f /usr/share/bash-completion/completions/alacritty ]]; then
+  # shellcheck disable=SC1091
+  source /usr/share/bash-completion/completions/alacritty
+elif [[ -f /usr/share/bash-completion/completions/alacritty.bash ]]; then
+  # shellcheck disable=SC1091
+  source /usr/share/bash-completion/completions/alacritty.bash
+fi
