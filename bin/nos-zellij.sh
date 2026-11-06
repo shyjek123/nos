@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Alacritty → Zellij session "default" (create or attach).
-# Never redirect the TUI away from the tty (that blanks the window).
-# On any failure, exec bash so Alacritty never blinks closed.
+# Alacritty → Zellij session "default". EVERY launch joins that one session.
+# Never create a random/other-named session, never redirect the TUI away
+# from the tty (that blanks the window), and fall back to bash on failure.
 
 export PATH="/usr/local/bin:/usr/bin:/bin:${HOME}/.local/bin:${PATH}"
 export NOS_PATH="${NOS_PATH:-$HOME/.local/share/nos}"
@@ -22,69 +22,89 @@ ZELLIJ_BIN="$(command -v zellij 2>/dev/null || true)"
 [[ -z "$ZELLIJ_BIN" && -x /usr/local/bin/zellij ]] && ZELLIJ_BIN=/usr/local/bin/zellij
 [[ -n "$ZELLIJ_BIN" ]] || fallback_bash "zellij not installed"
 
-mkdir -p "$HOME/.config/zellij/themes"
+SESSION=default
+CFG_FILE="$HOME/.config/zellij/config.kdl"
 
-# Preserve active theme name across template refresh
-ACTIVE_THEME=""
-if [[ -f "$HOME/.config/zellij/config.kdl" ]]; then
-  ACTIVE_THEME=$(grep -Eo 'theme "[^"]+"' "$HOME/.config/zellij/config.kdl" 2>/dev/null | head -1 | cut -d'"' -f2 || true)
-fi
+# Refresh/heal the on-disk config. Only called when a NEW session is about
+# to be created (or the file is broken) — rewriting it on every launch raced
+# between windows and flipped themes (template copy lands before the sed
+# that restores the active theme).
+heal_config() {
+  mkdir -p "$HOME/.config/zellij/themes"
+  local active=""
+  if [[ -f "$HOME/.config/nos/theme" ]]; then
+    active=$(tr -d '[:space:]' <"$HOME/.config/nos/theme")
+  fi
+  if [[ -z "$active" && -f "$CFG_FILE" ]]; then
+    active=$(grep -Eo 'theme "[^"]+"' "$CFG_FILE" 2>/dev/null | head -1 | cut -d'"' -f2 || true)
+  fi
+  if [[ -f "$NOS_PATH/configs/zellij.kdl" ]]; then
+    cp "$NOS_PATH/configs/zellij.kdl" "$CFG_FILE" 2>/dev/null || true
+  fi
+  for theme_kdl in "$NOS_PATH"/themes/*/zellij.kdl; do
+    [[ -f "$theme_kdl" ]] || continue
+    local name
+    name=$(basename "$(dirname "$theme_kdl")")
+    cp "$theme_kdl" "$HOME/.config/zellij/themes/$name.kdl" 2>/dev/null || true
+  done
+  if [[ -n "$active" && -f "$CFG_FILE" ]]; then
+    sed -i "s/theme \".*\"/theme \"$active\"/g" "$CFG_FILE" 2>/dev/null || true
+  fi
+  if [[ -f "$CFG_FILE" ]] && grep -qE '^\s*#' "$CFG_FILE" 2>/dev/null; then
+    sed -i -E 's/^(\s*)#/\1\/\//' "$CFG_FILE"
+    log "converted # comments to // in config.kdl"
+  fi
+}
 
-# Refresh from NOS templates when available (fixes # comments / drift)
-if [[ -f "$NOS_PATH/configs/zellij.kdl" ]]; then
-  cp "$NOS_PATH/configs/zellij.kdl" "$HOME/.config/zellij/config.kdl" 2>/dev/null || true
-fi
-for theme_kdl in "$NOS_PATH"/themes/*/zellij.kdl; do
-  [[ -f "$theme_kdl" ]] || continue
-  name=$(basename "$(dirname "$theme_kdl")")
-  cp "$theme_kdl" "$HOME/.config/zellij/themes/$name.kdl" 2>/dev/null || true
-done
-
-if [[ -n "$ACTIVE_THEME" && -f "$HOME/.config/zellij/config.kdl" ]]; then
-  sed -i "s/theme \".*\"/theme \"$ACTIVE_THEME\"/g" "$HOME/.config/zellij/config.kdl" 2>/dev/null || true
-fi
-
-# Last-resort heal: convert illegal # comments if a broken file is still present
-if [[ -f "$HOME/.config/zellij/config.kdl" ]] && grep -qE '^\s*#' "$HOME/.config/zellij/config.kdl" 2>/dev/null; then
-  sed -i -E 's/^(\s*)#/\1\/\//' "$HOME/.config/zellij/config.kdl"
-  log "converted # comments to // in config.kdl"
-fi
+# alive | exited | absent
+session_state() {
+  "$ZELLIJ_BIN" list-sessions --no-formatting 2>/dev/null | awk -v s="$SESSION" '
+    $1 == s { print (index($0, "EXITED") ? "exited" : "alive"); found = 1 }
+    END { if (!found) print "absent" }'
+}
 
 CFG=()
-if [[ -f "$HOME/.config/zellij/config.kdl" ]]; then
-  CFG=(--config "$HOME/.config/zellij/config.kdl")
-elif [[ -f "$NOS_PATH/configs/zellij.kdl" ]]; then
-  CFG=(--config "$NOS_PATH/configs/zellij.kdl")
+[[ -f "$CFG_FILE" ]] && CFG=(--config "$CFG_FILE")
+
+# Serialize session creation: rapid Alt+t presses must not race to create
+# two sessions (one wins a random name / template theme). Hold an flock
+# only while deciding + creating in the background, never while attached.
+LOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/nos-zellij-default.lock"
+exec 9>"$LOCK_FILE" 2>/dev/null || true
+if [[ -e /proc/$$/fd/9 ]]; then
+  flock -w 15 9 2>/dev/null || log "flock timeout; continuing without lock"
 fi
 
-SESSION=default
-log "attach --create $SESSION (bin=$ZELLIJ_BIN)"
+STATE=$(session_state)
+log "session '$SESSION' state: $STATE"
+if [[ "$STATE" == "exited" ]]; then
+  "$ZELLIJ_BIN" delete-session --force "$SESSION" >>"$LOG" 2>&1 || true
+  STATE=absent
+fi
 
-# CRITICAL: do not redirect stdout/stderr — Zellij draws on the tty.
-# Only send diagnostics for non-interactive cleanup commands to the log.
+if [[ "$STATE" != "alive" ]]; then
+  heal_config
+  [[ -f "$CFG_FILE" ]] && CFG=(--config "$CFG_FILE")
+  # Create the one true session detached, then every window just attaches.
+  if ! "$ZELLIJ_BIN" "${CFG[@]}" attach --create-background "$SESSION" >>"$LOG" 2>&1; then
+    log "create-background unsupported/failed; attach --create will handle it"
+  fi
+fi
+
+# Release the lock before the interactive attach
+flock -u 9 2>/dev/null || true
+exec 9>&-
+
+# CRITICAL: no redirects here — Zellij draws on the tty.
+"$ZELLIJ_BIN" "${CFG[@]}" attach "$SESSION"
+status=$?
+[[ $status -eq 0 ]] && exit 0
+log "attach failed (exit $status); healing config and retrying with --create"
+
+heal_config
+[[ -f "$CFG_FILE" ]] && CFG=(--config "$CFG_FILE")
 "$ZELLIJ_BIN" "${CFG[@]}" attach --create "$SESSION"
 status=$?
 [[ $status -eq 0 ]] && exit 0
-log "attach --create failed (exit $status); wiping session and retrying"
 
-"$ZELLIJ_BIN" delete-session --force "$SESSION" >>"$LOG" 2>&1 || true
-"$ZELLIJ_BIN" kill-session "$SESSION" >>"$LOG" 2>&1 || true
-
-"$ZELLIJ_BIN" "${CFG[@]}" attach --create "$SESSION"
-status=$?
-[[ $status -eq 0 ]] && exit 0
-log "retry failed (exit $status); trying plain 'zellij -s $SESSION'"
-
-"$ZELLIJ_BIN" "${CFG[@]}" -s "$SESSION"
-status=$?
-[[ $status -eq 0 ]] && exit 0
-
-# Last attempt: stock config only — still keep the tty
-if [[ -f "$NOS_PATH/configs/zellij.kdl" ]]; then
-  log "trying stock NOS config only"
-  "$ZELLIJ_BIN" --config "$NOS_PATH/configs/zellij.kdl" -s "nos-recovery"
-  status=$?
-  [[ $status -eq 0 ]] && exit 0
-fi
-
-fallback_bash "zellij could not start (see $LOG)"
+fallback_bash "zellij could not join session '$SESSION' (see $LOG)"
