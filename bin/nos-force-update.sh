@@ -5,7 +5,7 @@
 #
 #   curl -fsSL https://raw.githubusercontent.com/shyjek123/nos/main/bin/nos-force-update.sh | bash
 #   NOS_REF=cursor/fix-black-screen-2ef7 curl -fsSL \
-#     https://raw.githubusercontent.com/shyjek123/nos/cursor/fix-black-screen-2ef7/bin/nos-force-update.sh | bash
+#     https://raw.githubusercontent.com/shyjek123/nos/refs/heads/cursor/fix-black-screen-2ef7/bin/nos-force-update.sh | bash
 
 set -euo pipefail
 
