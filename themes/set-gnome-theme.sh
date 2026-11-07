@@ -9,7 +9,9 @@ THEME_DIR="$NOS_ROOT/themes/$THEME_DIR_NAME"
 mkdir -p "$HOME/.config/nos"
 printf '%s\n' "$THEME_DIR_NAME" >"$HOME/.config/nos/theme"
 
+# Every NOS theme keeps the desktop in dark mode.
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.shell.ubuntu color-scheme 'prefer-dark' 2>/dev/null || true
 gsettings set org.gnome.desktop.interface cursor-theme 'Yaru'
 gsettings set org.gnome.desktop.interface gtk-theme "Yaru-$NOS_THEME_COLOR-dark"
 gsettings set org.gnome.desktop.interface icon-theme "Yaru-$NOS_THEME_COLOR"
@@ -41,7 +43,9 @@ if [[ -f "$THEME_DIR/ghostty" ]]; then
     cat >"$HOME/.config/ghostty/config" <<EOF
 theme = ${THEME_DIR_NAME}
 font-family = CaskaydiaMono Nerd Font
-font-size = 10
+font-size = 12
+window-width = 120
+window-height = 34
 window-padding-x = 16
 window-padding-y = 14
 window-decoration = false

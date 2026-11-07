@@ -15,7 +15,9 @@ mkdir -p ~/.config/ghostty/themes
 cat >~/.config/ghostty/config <<'EOF'
 theme = c8-base
 font-family = CaskaydiaMono Nerd Font
-font-size = 10
+font-size = 12
+window-width = 120
+window-height = 34
 window-padding-x = 16
 window-padding-y = 14
 window-decoration = false

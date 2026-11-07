@@ -34,10 +34,11 @@ esac
 if [ "$COMPUTER_MAKER" == "Framework" ] && [ "$FRAMEWORK_HIDPI" = "1" ]; then
   gsettings set org.gnome.desktop.interface text-scaling-factor 0.8
   gsettings set org.gnome.desktop.interface cursor-size 16
-  if [ -f ~/.config/alacritty/alacritty.toml ]; then
-    sed -i "s/size = 9/size = 7/g" ~/.config/alacritty/alacritty.toml
+  # HiDPI panels already scale the UI up, so step the medium terminal font down one notch.
+  if [ -f ~/.config/alacritty/font-size.toml ]; then
+    sed -i "s/^size = 12$/size = 10/" ~/.config/alacritty/font-size.toml
   fi
   if [ -f ~/.config/ghostty/config ]; then
-    sed -i "s/^font-size = .*/font-size = 9/" ~/.config/ghostty/config
+    sed -i "s/^font-size = 12$/font-size = 10/" ~/.config/ghostty/config
   fi
 fi
