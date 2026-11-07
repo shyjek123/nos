@@ -1,11 +1,25 @@
-# File system. Colors come from defaults/bash/colors (truecolor, per theme).
-if command -v eza >/dev/null 2>&1; then
-  alias ls='eza -lh --group-directories-first --icons=auto --color=auto'
-  alias lt='eza --tree --level=2 --long --icons --git --color=auto'
-else
-  alias ls='ls --color=auto --group-directories-first'
-  alias lt='ls --color=auto'
-fi
+# File system. Colors come from defaults/bash/colors (theme truecolor).
+# A function, not only an alias: aliases are skipped in some shells NOS starts.
+# On a tty, force color so a missing terminfo entry cannot strip it.
+unalias ls lt 2>/dev/null || true
+ls() {
+  local color=auto
+  [[ -t 1 ]] && color=always
+  if command -v eza >/dev/null 2>&1; then
+    eza -lh --group-directories-first --icons=auto --color="$color" "$@"
+  else
+    command ls --color="$color" --group-directories-first "$@"
+  fi
+}
+lt() {
+  local color=auto
+  [[ -t 1 ]] && color=always
+  if command -v eza >/dev/null 2>&1; then
+    eza --tree --level=2 --long --icons --git --color="$color" "$@"
+  else
+    command ls --color="$color" "$@"
+  fi
+}
 alias lsa='ls -a'
 alias lta='lt -a'
 alias grep='grep --color=auto'

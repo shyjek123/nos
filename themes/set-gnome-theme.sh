@@ -27,7 +27,7 @@ gsettings set org.gnome.desktop.background picture-uri-dark $BACKGROUND_DEST_PAT
 gsettings set org.gnome.desktop.background picture-options 'zoom'
 
 # --- Terminals: full ANSI 16-color palette (Omakub-style) ---
-# ls/eza/grep/git map through these slots (see defaults/bash/colors):
+# ls/eza read these same hues as truecolor (see defaults/bash/colors):
 #   blue = directories, green = executables, yellow = source/docs,
 #   magenta = images, cyan = links/audio, red = archives.
 

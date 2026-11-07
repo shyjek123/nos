@@ -15,7 +15,7 @@ if [[ -f "$NOS_PATH/configs/zshrc" ]]; then
   cp "$NOS_PATH/configs/zshrc" "$HOME/.zshrc"
 fi
 
-if [[ -f "$HOME/.config/zellij/config.kdl" ]]; then
+if command -v zsh >/dev/null 2>&1 && [[ -f "$HOME/.config/zellij/config.kdl" ]]; then
   if grep -q '^default_shell ' "$HOME/.config/zellij/config.kdl"; then
     sed -i 's/^default_shell .*/default_shell "zsh"/' "$HOME/.config/zellij/config.kdl"
   else

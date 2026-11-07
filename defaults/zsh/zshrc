@@ -12,12 +12,9 @@ HISTSIZE=32768
 SAVEHIST=$HISTSIZE
 setopt inc_append_history share_history hist_ignore_dups hist_ignore_space
 
-__nos_colors="$("$NOS_PATH/bin/nos-theme-colors" 2>/dev/null)" || true
-if [[ -n "$__nos_colors" ]]; then
-  eval "$__nos_colors"
-fi
-unset __nos_colors
-export GREP_COLORS="${GREP_COLORS:-mt=1;93:fn=1;94:ln=1;96:se=90}"
+# Same listing colors as bash (theme truecolor, with a colored baseline).
+# shellcheck disable=SC1091
+source "$NOS_PATH/defaults/bash/colors"
 
 if command -v mise >/dev/null 2>&1; then
   eval "$(mise activate zsh)"
