@@ -15,13 +15,13 @@ white   = '#c8c093'
 
 [colors.bright]
 black   = '#727169'
-red     = '#e82424'
-green   = '#98bb6c'
-yellow  = '#e6c384'
-blue    = '#7fb4ca'
-magenta = '#938aa9'
-cyan    = '#7aa89f'
-white   = '#dcd7ba'
+red     = '#ff6b6b'
+green   = '#b4d48a'
+yellow  = '#f0d09a'
+blue    = '#a8c6f5'
+magenta = '#e8a0d4'
+cyan    = '#5ed4c0'
+white   = '#f2ecd4'
 
 [colors.selection]
 background = '#2d4f67'

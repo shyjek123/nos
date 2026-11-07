@@ -6,6 +6,10 @@
 
 THEME="${1:-$THEME}"
 THEME=$(echo "$THEME" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
+# The picker label is McLaren. The papaya palette lives in themes/artura.
+case "$THEME" in
+  mclaren|mclaren-artura) THEME="artura" ;;
+esac
 NOS_ROOT="${NOS_PATH:-$HOME/.local/share/nos}"
 
 if [[ -z "$THEME" || "$THEME" == "<<-back" ]]; then

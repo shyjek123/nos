@@ -1,8 +1,9 @@
-# File system (Omakub-style colored listings via eza + bat)
-alias ls='eza -lh --group-directories-first --icons=auto'
+# File system. Colors come from defaults/bash/colors and the active theme palette.
+alias ls='eza -lh --group-directories-first --icons=auto --color=auto'
 alias lsa='ls -a'
-alias lt='eza --tree --level=2 --long --icons --git'
+alias lt='eza --tree --level=2 --long --icons --git --color=auto'
 alias lta='lt -a'
+alias grep='grep --color=auto'
 alias ff="fzf --preview 'batcat --style=numbers --color=always {}'"
 alias fd='fdfind'
 alias cd='z'

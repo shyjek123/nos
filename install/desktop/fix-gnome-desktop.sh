@@ -75,4 +75,4 @@ source "$NOS_PATH/install/desktop/set-dock.sh" 2>/dev/null || true
 
 echo
 echo "Done. Press Alt+F2, type 'r', Enter (or log out/in) so GNOME reloads extensions."
-echo "Default theme: C8 Base (red). Switch to Artura anytime: nos → Theme."
+echo "Default theme: C8 Base (red). Switch to McLaren (papaya orange) anytime: nos → Theme."

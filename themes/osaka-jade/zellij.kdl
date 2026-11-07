@@ -2,14 +2,14 @@ themes {
     osaka-jade {
         fg "#C1C497"
         bg "#111c18"
-        red "#FF5345"
-        green "#549e6a"
-        yellow "#459451"
-        blue "#509475"
-        magenta "#D2689C"
-        cyan "#2DD5B7"
-        black "#23372B"
-        orange "#E5C736"
-        white "#F6F5DD"
+        red "#ff6b5c"
+        green "#5cb87a"
+        yellow "#e6c85a"
+        blue "#6ec8e0"
+        magenta "#e080b0"
+        cyan "#3ee0c0"
+        black "#23372b"
+        orange "#f0dc88"
+        white "#e8e6c8"
     }
 }

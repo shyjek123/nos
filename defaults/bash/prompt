@@ -12,4 +12,5 @@ __nos_git_branch() {
 }
 
 # Window title = full cwd; prompt = basename [branch] ->
-PS1='\[\e]0;\w\a\]\[\e[1;36m\]\W\[\e[0m\]\[\e[1;35m\]$(__nos_git_branch)\[\e[0m\] -> '
+# Directory uses the same bright-blue slot as `ls` directories. Branch is bright magenta.
+PS1='\[\e]0;\w\a\]\[\e[1;94m\]\W\[\e[0m\]\[\e[1;95m\]$(__nos_git_branch)\[\e[0m\] -> '

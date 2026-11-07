@@ -27,13 +27,13 @@ cyan = "#88c0d0"
 white = "#e5e9f0"
 
 [colors.bright]
-black = "#4c566a"
-red = "#bf616a"
-green = "#a3be8c"
-yellow = "#ebcb8b"
-blue = "#81a1c1"
-magenta = "#b48ead"
-cyan = "#8fbcbb"
+black = "#616e88"
+red = "#d88a92"
+green = "#c5d8ae"
+yellow = "#f6e2ae"
+blue = "#7eaeef"
+magenta = "#d4b4d0"
+cyan = "#8fd0c0"
 white = "#eceff4"
 
 [colors.dim]

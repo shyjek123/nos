@@ -23,7 +23,9 @@ gsettings set org.gnome.desktop.background picture-uri-dark $BACKGROUND_DEST_PAT
 gsettings set org.gnome.desktop.background picture-options 'zoom'
 
 # --- Terminals: full ANSI 16-color palette (Omakub-style) ---
-# Every colorized CLI (ls/eza/git/grep/bat --theme=ansi/…) maps through these slots.
+# ls/eza/grep/git map through these slots (see defaults/bash/colors):
+#   blue = directories, green = executables, yellow = source/docs,
+#   magenta = images, cyan = links/audio, red = archives.
 
 # Ghostty — official `theme = name` loader (themes live in ~/.config/ghostty/themes/)
 if [[ -f "$THEME_DIR/ghostty" ]]; then

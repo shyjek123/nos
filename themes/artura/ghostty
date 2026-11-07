@@ -1,24 +1,24 @@
-# McLaren Artura — Omakub-style full ANSI 16 (all CLI colors inherit this).
-# Orange dominates via red/yellow/bright-yellow + cursor/selection (blue stays blue).
+# McLaren Artura — papaya orange. Bright blue directories stay cool against it.
+# Orange owns the background, cursor, selection, and bright yellow (source files).
 
-background = #14110e
-foreground = #e8d5c4
-cursor-color = #ff8a3d
-selection-background = #ff8a3d
-selection-foreground = #14110e
-palette = 0=#2a221c
-palette = 1=#e05a45
-palette = 2=#9bc27a
-palette = 3=#f0a020
-palette = 4=#6b9fd4
-palette = 5=#d4806a
-palette = 6=#5aada0
-palette = 7=#c4a890
-palette = 8=#5a4538
-palette = 9=#ff7a55
-palette = 10=#b8d898
-palette = 11=#ff8a3d
-palette = 12=#8ab4e8
-palette = 13=#e8a080
-palette = 14=#70c8b8
-palette = 15=#f5ebe0
+background = #241006
+foreground = #f4e6d6
+cursor-color = #ff7a18
+selection-background = #ff7a18
+selection-foreground = #241006
+palette = 0=#3a2418
+palette = 1=#ff5c3a
+palette = 2=#b6de74
+palette = 3=#ffb000
+palette = 4=#79c0ff
+palette = 5=#ff8ec8
+palette = 6=#5ee0c8
+palette = 7=#e8d2bc
+palette = 8=#6a4a36
+palette = 9=#ff8d70
+palette = 10=#d4f2a2
+palette = 11=#ff8a1e
+palette = 12=#b9e2ff
+palette = 13=#ffb6e0
+palette = 14=#5ef0d4
+palette = 15=#fff6ee

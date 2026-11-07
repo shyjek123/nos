@@ -1,22 +1,23 @@
-# Osaka Jade — derived from alacritty.toml
+# Osaka Jade — jade ground, sky-blue directories, gold source, mint links.
+
 background = #111c18
 foreground = #C1C497
 cursor-color = #D7C995
 selection-background = #23372B
 selection-foreground = #C1C497
 palette = 0=#23372B
-palette = 1=#FF5345
-palette = 2=#549e6a
-palette = 3=#459451
-palette = 4=#509475
-palette = 5=#D2689C
-palette = 6=#2DD5B7
-palette = 7=#F6F5DD
-palette = 8=#53685B
-palette = 9=#db9f9c
-palette = 10=#63b07a
-palette = 11=#E5C736
-palette = 12=#ACD4CF
-palette = 13=#75bbb3
-palette = 14=#8CD3CB
-palette = 15=#9eebb3
+palette = 1=#ff6b5c
+palette = 2=#5cb87a
+palette = 3=#e6c85a
+palette = 4=#6ec8e0
+palette = 5=#e080b0
+palette = 6=#3ee0c0
+palette = 7=#e8e6c8
+palette = 8=#4e6658
+palette = 9=#ff9a90
+palette = 10=#8ed4a4
+palette = 11=#f0dc88
+palette = 12=#b7ebff
+palette = 13=#f0b0d0
+palette = 14=#8ef0dc
+palette = 15=#f6f6e4
