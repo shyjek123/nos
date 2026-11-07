@@ -12,5 +12,7 @@ __nos_git_branch() {
 }
 
 # Window title = full cwd; prompt = basename [branch] ->
-# Directory uses the same bright-blue slot as `ls` directories. Branch is bright magenta.
-PS1='\[\e]0;\w\a\]\[\e[1;94m\]\W\[\e[0m\]\[\e[1;95m\]$(__nos_git_branch)\[\e[0m\] -> '
+# Directory and git colors are the same truecolor values `ls` uses for that theme.
+: "${NOS_DIR_SGR:=1;94}"
+: "${NOS_GIT_SGR:=1;95}"
+PS1="\[\e]0;\w\a\]\[\e[${NOS_DIR_SGR}m\]\W\[\e[0m\]\[\e[${NOS_GIT_SGR}m\]\$(__nos_git_branch)\[\e[0m\] -> "

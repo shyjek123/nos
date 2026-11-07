@@ -5,6 +5,10 @@ NOS_ROOT="${NOS_PATH:-$HOME/.local/share/nos}"
 THEME_DIR_NAME=$(dirname "$NOS_THEME_BACKGROUND")
 THEME_DIR="$NOS_ROOT/themes/$THEME_DIR_NAME"
 
+# Shell listings read this on next start and paint ls/eza with this theme's hex colors.
+mkdir -p "$HOME/.config/nos"
+printf '%s\n' "$THEME_DIR_NAME" >"$HOME/.config/nos/theme"
+
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface cursor-theme 'Yaru'
 gsettings set org.gnome.desktop.interface gtk-theme "Yaru-$NOS_THEME_COLOR-dark"

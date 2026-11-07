@@ -1,7 +1,12 @@
-# File system. Colors come from defaults/bash/colors and the active theme palette.
-alias ls='eza -lh --group-directories-first --icons=auto --color=auto'
+# File system. Colors come from defaults/bash/colors (truecolor, per theme).
+if command -v eza >/dev/null 2>&1; then
+  alias ls='eza -lh --group-directories-first --icons=auto --color=auto'
+  alias lt='eza --tree --level=2 --long --icons --git --color=auto'
+else
+  alias ls='ls --color=auto --group-directories-first'
+  alias lt='ls --color=auto'
+fi
 alias lsa='ls -a'
-alias lt='eza --tree --level=2 --long --icons --git --color=auto'
 alias lta='lt -a'
 alias grep='grep --color=auto'
 alias ff="fzf --preview 'batcat --style=numbers --color=always {}'"

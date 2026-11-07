@@ -1,0 +1,2 @@
+# NOS zsh entrypoint. Interactive terminals source this file.
+source "${NOS_PATH:-$HOME/.local/share/nos}/defaults/zsh/zshrc"
