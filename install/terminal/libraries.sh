@@ -8,41 +8,19 @@ sudo apt install -y \
   redis-tools sqlite3 libsqlite3-0 libmysqlclient-dev libpq-dev postgresql-client \
   postgresql-client-common
 
-# Core build + reverse-engineering / pentest tooling for NOS
-
-# Preseed Wireshark setuid before package install
-echo "wireshark-common wireshark-common/install-setuid boolean true" | sudo debconf-set-selections 2>/dev/null || true
+# Compilers and debuggers. The apt cybersecurity tools live in cyber-tools.sh.
 
 sudo apt install -y \
   build-essential pkg-config autoconf bison clang cmake ninja-build nasm yasm \
   libssl-dev libffi-dev zlib1g-dev libpcap-dev libnetfilter-queue-dev \
   gdb gdb-multiarch lldb valgrind \
   strace ltrace \
-  binutils binwalk hexedit xxd \
-  radare2 \
-  nmap ncat masscan \
-  wireshark tshark tcpdump \
-  netcat-openbsd socat \
-  jq whois dnsutils traceroute \
-  hydra john hashcat \
-  sqlmap \
-  aircrack-ng \
-  smbclient nfs-common \
+  binutils \
   qemu-system-x86 qemu-user qemu-user-static \
-  patchelf checksec \
+  patchelf \
   python3-pip python3-venv pipx \
   default-jdk \
-  foremost testdisk \
-  steghide exiftool \
-  apktool \
-  gobuster ffuf \
-  nikto \
-  proxychains4 \
   rlwrap
-
-# Wireshark: allow non-root capture when possible
-sudo dpkg-reconfigure -f noninteractive wireshark-common 2>/dev/null || true
-sudo usermod -aG wireshark "$USER" 2>/dev/null || true
 
 # Ensure pipx path for user tools
 pipx ensurepath >/dev/null 2>&1 || true

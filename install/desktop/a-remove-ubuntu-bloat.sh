@@ -3,6 +3,8 @@
 # Purge stock Ubuntu desktop bloat NOS does not need.
 # Runs early in the desktop install loop (a-*.sh).
 # Safe to re-run; missing packages are ignored.
+#
+# Kept on purpose: the NOS wallpaper, snapd and installed snaps, and LibreOffice.
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -60,16 +62,15 @@ BLOAT_APPS=(
   gnome-user-docs
   ubuntu-docs
   example-content
-  libreoffice*
-  libreoffice-common
-  libreoffice-core
-  libreoffice-writer
-  libreoffice-calc
-  libreoffice-impress
-  libreoffice-draw
-  libreoffice-math
-  libreoffice-gnome
-  hunspell-en-us
+  gnome-characters
+  gnome-font-viewer
+  gnome-logs
+  gnome-calculator
+  gnome-sound-recorder
+  gnome-todo
+  usb-creator-gtk
+  pitivi
+  gnome-games
 )
 
 # Telemetry / crash reporting / adware-ish defaults
@@ -84,14 +85,9 @@ BLOAT_TELEMETRY=(
   kerneloops
 )
 
-# Snap store UI clutter (keep snapd + gnome-software for Flatpak)
-BLOAT_SNAP_UI=(
-  snap-store
-  ubuntu-software
-  gnome-software-plugin-snap
-)
-
-# Branding / welcome / tour (wallpaper suite package is release-codename specific)
+# Branding / welcome / tour.
+# ubuntu-wallpapers is the stock image pack. NOS applies its own background later.
+# snapd is not listed here, so installed snap packages stay.
 BLOAT_MISC=(
   gnome-initial-setup
   gnome-tour
@@ -104,8 +100,6 @@ BLOAT_MISC=(
 purge_list() {
   local pkg
   for pkg in "$@"; do
-    # Skip globs that apt can't resolve as a single name when quoted wrongly —
-    # libreoffice* is handled via apt pattern below.
     if [[ "$pkg" == *"*"* ]]; then
       sudo apt-get purge -y "$pkg" 2>/dev/null || true
     else
@@ -119,11 +113,7 @@ purge_list() {
 purge_list "${BLOAT_GAMES[@]}"
 purge_list "${BLOAT_APPS[@]}"
 purge_list "${BLOAT_TELEMETRY[@]}"
-purge_list "${BLOAT_SNAP_UI[@]}"
 purge_list "${BLOAT_MISC[@]}"
-
-# Catch remaining LibreOffice packages by pattern
-sudo apt-get purge -y 'libreoffice*' 2>/dev/null || true
 
 # Autoremove orphans left behind
 sudo apt-get autoremove -y --purge

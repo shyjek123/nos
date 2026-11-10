@@ -10,8 +10,9 @@ fi
 # Signal caller to exit without re-entering the TUI
 export NOS_UNINSTALLED=1
 
-# Restore previous bashrc/inputrc if we backed them up
+# Restore previous shell rc files if we backed them up
 [[ -f ~/.bashrc.bak ]] && mv -f ~/.bashrc.bak ~/.bashrc
+[[ -f ~/.zshrc.bak ]] && mv -f ~/.zshrc.bak ~/.zshrc
 [[ -f ~/.inputrc.bak ]] && mv -f ~/.inputrc.bak ~/.inputrc
 
 # Drop NOS desktop launchers

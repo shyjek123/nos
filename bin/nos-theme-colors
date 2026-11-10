@@ -1,0 +1,257 @@
+#!/usr/bin/env python3
+"""Print theme-matched truecolor LS_COLORS and EZA_COLORS.
+
+GNU ls and eza only color output when the shell exports these variables.
+ANSI 16 slots follow the terminal palette, which stays plain if that palette
+is not what the emulator is using. These codes carry the theme's own hex
+values (38;2;R;G;B), the same idea as a zsh dircolors setup.
+"""
+
+from __future__ import annotations
+
+import re
+import sys
+from pathlib import Path
+
+ROLES = {
+    "black": 0,
+    "red": 1,
+    "green": 2,
+    "yellow": 3,
+    "blue": 4,
+    "magenta": 5,
+    "cyan": 6,
+    "white": 7,
+    "bright_black": 8,
+    "bright_red": 9,
+    "bright_green": 10,
+    "bright_yellow": 11,
+    "bright_blue": 12,
+    "bright_magenta": 13,
+    "bright_cyan": 14,
+    "bright_white": 15,
+}
+
+# Used when a theme file cannot be read. Still fully color-coded.
+FALLBACK = {
+    0: "2a2a2a",
+    1: "e06c75",
+    2: "98c379",
+    3: "e5c07b",
+    4: "61afef",
+    5: "c678dd",
+    6: "56b6c2",
+    7: "dcdfe4",
+    8: "5c6370",
+    9: "ff7a8a",
+    10: "b6e3a8",
+    11: "ffd76a",
+    12: "79c0ff",
+    13: "f0a6ff",
+    14: "7ee0d4",
+    15: "ffffff",
+    "fg": "dcdfe4",
+}
+
+
+def nos_root() -> Path:
+    env = Path(__import__("os").environ.get("NOS_PATH", "")).expanduser()
+    if env and (env / "themes").is_dir():
+        return env
+    here = Path(__file__).resolve().parent.parent
+    if (here / "themes").is_dir():
+        return here
+    return Path.home() / ".local/share/nos"
+
+
+def read_theme_slug(explicit: str | None) -> str:
+    if explicit:
+        return explicit
+    state = Path.home() / ".config/nos/theme"
+    if state.is_file():
+        slug = state.read_text().strip().lower().replace(" ", "-")
+        if slug in {"mclaren", "mclaren-artura"}:
+            return "artura"
+        if slug:
+            return slug
+    ghostty = Path.home() / ".config/ghostty/config"
+    if ghostty.is_file():
+        match = re.search(r"^theme\s*=\s*(\S+)", ghostty.read_text(), re.M)
+        if match:
+            slug = match.group(1).strip().strip('"').strip("'")
+            if slug in {"mclaren", "mclaren-artura"}:
+                return "artura"
+            return slug
+    return "c8-base"
+
+
+def load_palette(theme_dir: Path) -> dict:
+    palette = dict(FALLBACK)
+    ghostty = theme_dir / "ghostty"
+    if not ghostty.is_file():
+        return palette
+    text = ghostty.read_text(errors="replace")
+    fg = re.search(r"^foreground\s*=\s*#([0-9A-Fa-f]{6})", text, re.M)
+    if fg:
+        palette["fg"] = fg.group(1).lower()
+    for index, hex_color in re.findall(
+        r"^palette\s*=\s*(\d+)\s*=\s*#([0-9A-Fa-f]{6})", text, re.M
+    ):
+        palette[int(index)] = hex_color.lower()
+    return palette
+
+
+def rgb(palette: dict, index: int) -> str:
+    hex_color = palette.get(index, FALLBACK[index])
+    red = int(hex_color[0:2], 16)
+    green = int(hex_color[2:4], 16)
+    blue = int(hex_color[4:6], 16)
+    return f"{red};{green};{blue}"
+
+
+def paint(palette: dict, index: int, *attrs: str) -> str:
+    codes = list(attrs) + [f"38;2;{rgb(palette, index)}"]
+    return ";".join(codes)
+
+
+def build(palette: dict) -> dict[str, str]:
+    directory = paint(palette, ROLES["bright_blue"], "1")
+    executable = paint(palette, ROLES["bright_green"], "1")
+    source = paint(palette, ROLES["bright_yellow"], "1")
+    document = paint(palette, ROLES["yellow"])
+    image = paint(palette, ROLES["bright_magenta"], "1")
+    video = paint(palette, ROLES["bright_magenta"], "3", "1")
+    audio = paint(palette, ROLES["bright_cyan"], "1")
+    link = paint(palette, ROLES["bright_cyan"], "1")
+    archive = paint(palette, ROLES["bright_red"], "1")
+    plain = paint(palette, ROLES["bright_white"])
+    config = paint(palette, ROLES["cyan"])
+    muted = paint(palette, ROLES["bright_black"], "2")
+    device = paint(palette, ROLES["bright_yellow"], "1")
+
+    pairs = [
+        f"di={directory}",
+        f"ln={link}",
+        f"or={archive}",
+        f"ex={executable}",
+        f"fi={plain}",
+        f"pi={device}",
+        f"so={image}",
+        f"bd={device}",
+        f"cd={device}",
+        f"mi={archive}",
+        f"*.zip={archive}",
+        f"*.tar={archive}",
+        f"*.tgz={archive}",
+        f"*.gz={archive}",
+        f"*.bz2={archive}",
+        f"*.xz={archive}",
+        f"*.7z={archive}",
+        f"*.rar={archive}",
+        f"*.zst={archive}",
+        f"*.png={image}",
+        f"*.jpg={image}",
+        f"*.jpeg={image}",
+        f"*.gif={image}",
+        f"*.webp={image}",
+        f"*.svg={image}",
+        f"*.ico={image}",
+        f"*.mp4={video}",
+        f"*.mkv={video}",
+        f"*.webm={video}",
+        f"*.mov={video}",
+        f"*.mp3={audio}",
+        f"*.flac={audio}",
+        f"*.wav={audio}",
+        f"*.ogg={audio}",
+        f"*.pdf={document}",
+        f"*.md={source}",
+        f"*.markdown={source}",
+        f"*.txt={document}",
+        f"*.rst={document}",
+        f"*.rs={source}",
+        f"*.py={source}",
+        f"*.js={source}",
+        f"*.jsx={source}",
+        f"*.ts={source}",
+        f"*.tsx={source}",
+        f"*.go={source}",
+        f"*.c={source}",
+        f"*.h={source}",
+        f"*.cpp={source}",
+        f"*.hpp={source}",
+        f"*.java={source}",
+        f"*.rb={source}",
+        f"*.lua={source}",
+        f"*.zig={source}",
+        f"*.sh={source}",
+        f"*.bash={source}",
+        f"*.zsh={source}",
+        f"*.json={config}",
+        f"*.yaml={config}",
+        f"*.yml={config}",
+        f"*.toml={config}",
+        f"*.xml={config}",
+        f"*.ini={config}",
+        f"*.conf={config}",
+        f"*.lock={muted}",
+        f"*.log={muted}",
+    ]
+    ls_colors = ":".join(pairs)
+    eza_colors = ":".join(
+        [
+            f"di={directory}",
+            f"ln={link}",
+            f"or={archive}",
+            f"ex={executable}",
+            f"fi={plain}",
+            f"pi={device}",
+            f"so={image}",
+            f"bd={device}",
+            f"cd={device}",
+            f"mp=4;{directory}",
+            f"im={image}",
+            f"vi={video}",
+            f"mu={audio}",
+            f"lo={audio}",
+            f"cr={executable}",
+            f"do={document}",
+            f"co={archive}",
+            f"tm={muted}",
+            f"cm={muted}",
+            f"bu=4;{source}",
+            f"sc={source}",
+            f"da={muted}",
+            f"xx={muted}",
+            f"ga={executable}",
+            f"gm={directory}",
+            f"gd={archive}",
+            f"gi={muted}",
+        ]
+    )
+    return {
+        "LS_COLORS": ls_colors,
+        "EZA_COLORS": eza_colors,
+        "NOS_DIR_SGR": directory,
+        "NOS_GIT_SGR": image,
+        "NOS_LINK_SGR": link,
+    }
+
+
+def main() -> int:
+    explicit = None
+    if len(sys.argv) >= 3 and sys.argv[1] == "--theme":
+        explicit = sys.argv[2]
+    elif len(sys.argv) == 2 and not sys.argv[1].startswith("-"):
+        explicit = sys.argv[1]
+
+    slug = read_theme_slug(explicit)
+    palette = load_palette(nos_root() / "themes" / slug)
+    exports = build(palette)
+    for key, value in exports.items():
+        print(f"export {key}='{value}'")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

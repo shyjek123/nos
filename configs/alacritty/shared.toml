@@ -5,6 +5,9 @@ TERM = "xterm-256color"
 program = "zellij"
 
 [window]
+# Medium start: larger than the 80x24 default, short of a full screen.
+dimensions.columns = 120
+dimensions.lines = 34
 padding.x = 16
 padding.y = 14
 decorations = "None"

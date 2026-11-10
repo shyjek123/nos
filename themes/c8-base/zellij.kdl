@@ -1,15 +1,15 @@
 themes {
     c8-base {
-        fg 232 224 216
-        bg 12 10 11
-        black 26 18 20
-        red 230 57 70
-        green 125 155 118
-        yellow 244 162 97
-        blue 196 92 38
-        magenta 214 90 122
-        cyan 231 111 81
-        white 232 224 216
-        orange 255 122 61
+        fg 243 228 230
+        bg 26 8 12
+        black 44 22 28
+        red 255 45 63
+        green 143 212 143
+        yellow 240 193 74
+        blue 126 182 255
+        magenta 240 138 180
+        cyan 90 212 220
+        white 234 212 216
+        orange 255 106 60
     }
 }

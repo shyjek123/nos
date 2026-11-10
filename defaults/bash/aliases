@@ -1,8 +1,28 @@
-# File system (Omakub-style colored listings via eza + bat)
-alias ls='eza -lh --group-directories-first --icons=auto'
+# File system. Colors come from defaults/bash/colors (theme truecolor).
+# A function, not only an alias: aliases are skipped in some shells NOS starts.
+# On a tty, force color so a missing terminfo entry cannot strip it.
+unalias ls lt 2>/dev/null || true
+ls() {
+  local color=auto
+  [[ -t 1 ]] && color=always
+  if command -v eza >/dev/null 2>&1; then
+    eza -lh --group-directories-first --icons=auto --color="$color" "$@"
+  else
+    command ls --color="$color" --group-directories-first "$@"
+  fi
+}
+lt() {
+  local color=auto
+  [[ -t 1 ]] && color=always
+  if command -v eza >/dev/null 2>&1; then
+    eza --tree --level=2 --long --icons --git --color="$color" "$@"
+  else
+    command ls --color="$color" "$@"
+  fi
+}
 alias lsa='ls -a'
-alias lt='eza --tree --level=2 --long --icons --git'
 alias lta='lt -a'
+alias grep='grep --color=auto'
 alias ff="fzf --preview 'batcat --style=numbers --color=always {}'"
 alias fd='fdfind'
 alias cd='z'

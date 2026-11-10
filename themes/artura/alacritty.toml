@@ -1,32 +1,34 @@
-# McLaren Artura — Omakub-style full ANSI 16 (mirrors ghostty)
+# McLaren Artura — papaya orange. Bright blue directories stay cool against it.
+# Palette roles: red archives, green executables, yellow source, blue directories,
+# magenta images, cyan links. Mirrors ghostty.
 [colors.primary]
-background = "#14110e"
-foreground = "#e8d5c4"
+background = "#241006"
+foreground = "#f4e6d6"
 
 [colors.cursor]
-text = "#14110e"
-cursor = "#ff8a3d"
+text = "#241006"
+cursor = "#ff7a18"
 
 [colors.normal]
-black = "#2a221c"
-red = "#e05a45"
-green = "#9bc27a"
-yellow = "#f0a020"
-blue = "#6b9fd4"
-magenta = "#d4806a"
-cyan = "#5aada0"
-white = "#c4a890"
+black = "#3a2418"
+red = "#ff5c3a"
+green = "#b6de74"
+yellow = "#ffb000"
+blue = "#79c0ff"
+magenta = "#ff8ec8"
+cyan = "#5ee0c8"
+white = "#e8d2bc"
 
 [colors.bright]
-black = "#5a4538"
-red = "#ff7a55"
-green = "#b8d898"
-yellow = "#ff8a3d"
-blue = "#8ab4e8"
-magenta = "#e8a080"
-cyan = "#70c8b8"
-white = "#f5ebe0"
+black = "#6a4a36"
+red = "#ff8d70"
+green = "#d4f2a2"
+yellow = "#ff8a1e"
+blue = "#b9e2ff"
+magenta = "#ffb6e0"
+cyan = "#5ef0d4"
+white = "#fff6ee"
 
 [colors.selection]
-text = "#14110e"
-background = "#ff8a3d"
+text = "#241006"
+background = "#ff7a18"

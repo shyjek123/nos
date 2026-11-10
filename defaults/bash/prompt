@@ -12,4 +12,7 @@ __nos_git_branch() {
 }
 
 # Window title = full cwd; prompt = basename [branch] ->
-PS1='\[\e]0;\w\a\]\[\e[1;36m\]\W\[\e[0m\]\[\e[1;35m\]$(__nos_git_branch)\[\e[0m\] -> '
+# Directory and git colors are the same truecolor values `ls` uses for that theme.
+: "${NOS_DIR_SGR:=1;94}"
+: "${NOS_GIT_SGR:=1;95}"
+PS1="\[\e]0;\w\a\]\[\e[${NOS_DIR_SGR}m\]\W\[\e[0m\]\[\e[${NOS_GIT_SGR}m\]\$(__nos_git_branch)\[\e[0m\] -> "

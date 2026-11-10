@@ -6,6 +6,10 @@
 
 THEME="${1:-$THEME}"
 THEME=$(echo "$THEME" | tr '[:upper:]' '[:lower:]' | sed 's/ /-/g')
+# The picker label is McLaren. The papaya palette lives in themes/artura.
+case "$THEME" in
+  mclaren|mclaren-artura) THEME="artura" ;;
+esac
 NOS_ROOT="${NOS_PATH:-$HOME/.local/share/nos}"
 
 if [[ -z "$THEME" || "$THEME" == "<<-back" ]]; then
@@ -72,5 +76,19 @@ fi
 [[ -f "$THEME_DIR/gnome.sh" ]] && source "$THEME_DIR/gnome.sh"
 [[ -f "$THEME_DIR/tophat.sh" ]] && source "$THEME_DIR/tophat.sh"
 [[ -f "$THEME_DIR/vscode.sh" ]] && source "$THEME_DIR/vscode.sh"
+
+# Listings read this file the next time a shell starts.
+mkdir -p "$HOME/.config/nos"
+printf '%s\n' "$THEME" >"$HOME/.config/nos/theme"
+
+# Restyle this shell immediately. Other terminals pick it up on next open.
+if [[ -f "$NOS_ROOT/defaults/bash/colors" ]]; then
+  # shellcheck disable=SC1090
+  source "$NOS_ROOT/defaults/bash/colors"
+fi
+if [[ -n "${BASH_VERSION:-}" && -f "$NOS_ROOT/defaults/bash/prompt" ]]; then
+  # shellcheck disable=SC1090
+  source "$NOS_ROOT/defaults/bash/prompt"
+fi
 
 echo "Theme applied: $THEME"

@@ -5,7 +5,13 @@ NOS_ROOT="${NOS_PATH:-$HOME/.local/share/nos}"
 THEME_DIR_NAME=$(dirname "$NOS_THEME_BACKGROUND")
 THEME_DIR="$NOS_ROOT/themes/$THEME_DIR_NAME"
 
+# Shell listings read this on next start and paint ls/eza with this theme's hex colors.
+mkdir -p "$HOME/.config/nos"
+printf '%s\n' "$THEME_DIR_NAME" >"$HOME/.config/nos/theme"
+
+# Every NOS theme keeps the desktop in dark mode.
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.shell.ubuntu color-scheme 'prefer-dark' 2>/dev/null || true
 gsettings set org.gnome.desktop.interface cursor-theme 'Yaru'
 gsettings set org.gnome.desktop.interface gtk-theme "Yaru-$NOS_THEME_COLOR-dark"
 gsettings set org.gnome.desktop.interface icon-theme "Yaru-$NOS_THEME_COLOR"
@@ -23,7 +29,9 @@ gsettings set org.gnome.desktop.background picture-uri-dark $BACKGROUND_DEST_PAT
 gsettings set org.gnome.desktop.background picture-options 'zoom'
 
 # --- Terminals: full ANSI 16-color palette (Omakub-style) ---
-# Every colorized CLI (ls/eza/git/grep/bat --theme=ansi/…) maps through these slots.
+# ls/eza read these same hues as truecolor (see defaults/bash/colors):
+#   blue = directories, green = executables, yellow = source/docs,
+#   magenta = images, cyan = links/audio, red = archives.
 
 # Ghostty — official `theme = name` loader (themes live in ~/.config/ghostty/themes/)
 if [[ -f "$THEME_DIR/ghostty" ]]; then
@@ -35,7 +43,9 @@ if [[ -f "$THEME_DIR/ghostty" ]]; then
     cat >"$HOME/.config/ghostty/config" <<EOF
 theme = ${THEME_DIR_NAME}
 font-family = CaskaydiaMono Nerd Font
-font-size = 10
+font-size = 12
+window-width = 120
+window-height = 34
 window-padding-x = 16
 window-padding-y = 14
 window-decoration = false

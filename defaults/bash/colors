@@ -1,0 +1,44 @@
+# Listing colors for every NOS theme.
+#
+# GNU ls and eza stay monochrome until LS_COLORS / EZA_COLORS are exported.
+# Palette slots (34, 94, ...) only change if the emulator is actually using
+# that theme's 16-color table. These values are the theme's own hex colors
+# (38;2;R;G;B), so directories, source, images, archives, and links stay
+# distinct in Ghostty, Alacritty, and Zellij.
+
+export COLORTERM="${COLORTERM:-truecolor}"
+
+# Baseline, used when the theme helper cannot run. Still fully color-coded.
+export LS_COLORS="di=1;38;2;121;192;255:ln=1;38;2;94;224;200:or=1;38;2;255;92;58:ex=1;38;2;182;222;116:fi=38;2;232;210;188:\
+*.zip=1;38;2;255;92;58:*.tar=1;38;2;255;92;58:*.tgz=1;38;2;255;92;58:*.gz=1;38;2;255;92;58:*.bz2=1;38;2;255;92;58:*.xz=1;38;2;255;92;58:*.7z=1;38;2;255;92;58:*.rar=1;38;2;255;92;58:\
+*.png=1;38;2;255;142;200:*.jpg=1;38;2;255;142;200:*.jpeg=1;38;2;255;142;200:*.gif=1;38;2;255;142;200:*.webp=1;38;2;255;142;200:*.svg=1;38;2;255;142;200:\
+*.mp4=3;1;38;2;255;142;200:*.mkv=3;1;38;2;255;142;200:*.webm=3;1;38;2;255;142;200:\
+*.mp3=1;38;2;94;224;200:*.flac=1;38;2;94;224;200:*.wav=1;38;2;94;224;200:\
+*.pdf=38;2;255;176;0:*.md=1;38;2;255;138;30:*.txt=38;2;255;176;0:\
+*.rs=1;38;2;255;138;30:*.py=1;38;2;255;138;30:*.js=1;38;2;255;138;30:*.ts=1;38;2;255;138;30:*.go=1;38;2;255;138;30:*.c=1;38;2;255;138;30:*.h=1;38;2;255;138;30:*.cpp=1;38;2;255;138;30:*.sh=1;38;2;255;138;30:*.bash=1;38;2;255;138;30:\
+*.json=38;2;94;224;200:*.yaml=38;2;94;224;200:*.yml=38;2;94;224;200:*.toml=38;2;94;224;200:\
+*.log=2;38;2;106;74;54:*.lock=2;38;2;106;74;54"
+export EZA_COLORS="di=1;38;2;121;192;255:ln=1;38;2;94;224;200:or=1;38;2;255;92;58:ex=1;38;2;182;222;116:fi=38;2;232;210;188:\
+im=1;38;2;255;142;200:vi=3;1;38;2;255;142;200:mu=1;38;2;94;224;200:lo=1;38;2;94;224;200:\
+sc=1;38;2;255;138;30:do=38;2;255;176;0:co=1;38;2;255;92;58:da=2;38;2;106;74;54:xx=2;38;2;106;74;54"
+export NOS_DIR_SGR="1;38;2;121;192;255"
+export NOS_GIT_SGR="1;38;2;255;142;200"
+export NOS_LINK_SGR="1;38;2;94;224;200"
+
+__nos_color_root="${NOS_PATH:-$HOME/.local/share/nos}"
+if [[ ! -f "${__nos_color_root}/bin/nos-theme-colors" && -n "${BASH_SOURCE+x}" && -n "${BASH_SOURCE[0]:-}" ]]; then
+  __nos_color_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+fi
+
+__nos_colors=""
+if [[ -f "${__nos_color_root}/bin/nos-theme-colors" ]] && command -v python3 >/dev/null 2>&1; then
+  __nos_colors="$(python3 "${__nos_color_root}/bin/nos-theme-colors" 2>/dev/null)" || true
+fi
+# Theme hex wins. A failed helper leaves the baseline colors above in place.
+if [[ "${__nos_colors}" == *"export LS_COLORS="* ]]; then
+  eval "${__nos_colors}"
+fi
+unset __nos_colors __nos_color_root
+
+# Filename, line number, and match each get their own slot.
+export GREP_COLORS="${GREP_COLORS:-mt=1;93:fn=1;94:ln=1;96:se=90}"

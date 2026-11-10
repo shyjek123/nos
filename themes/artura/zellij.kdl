@@ -1,15 +1,15 @@
 themes {
     artura {
-        fg 232 224 216
-        bg 12 10 11
-        black 26 20 16
-        red 230 57 70
-        green 125 155 118
-        yellow 255 183 3
-        blue 196 92 38
-        magenta 214 90 122
-        cyan 231 111 81
-        white 232 224 216
-        orange 255 122 61
+        fg 244 230 214
+        bg 36 16 6
+        black 58 36 24
+        red 255 92 58
+        green 182 222 116
+        yellow 255 176 0
+        blue 121 192 255
+        magenta 255 142 200
+        cyan 94 224 200
+        white 232 210 188
+        orange 255 122 24
     }
 }
